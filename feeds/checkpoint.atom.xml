@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Parede de Fogo</title><link href="http://parededefogo.com.br/" rel="alternate"></link><link href="http://parededefogo.com.br/feeds/checkpoint.atom.xml" rel="self"></link><id>http://parededefogo.com.br/</id><updated>2015-02-26T11:13:00-03:00</updated><entry><title>Using the 'tcpdump' utility on IPSO OS to troubleshoot network problems</title><link href="http://parededefogo.com.br/2015/02/26/using-the-tcpdump-utility-on-ipso-os-to-troubleshoot-network-problems/" rel="alternate"></link><updated>2015-02-26T11:13:00-03:00</updated><author><name>talmeida</name></author><id>tag:parededefogo.com.br,2015-02-26:2015/02/26/using-the-tcpdump-utility-on-ipso-os-to-troubleshoot-network-problems/</id><summary type="html">&lt;p&gt;I found today a very useful article. It's worth a try!&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Parede de Fogo</title><link href="http://parededefogo.com.br/" rel="alternate"></link><link href="http://parededefogo.com.br/feeds/checkpoint.atom.xml" rel="self"></link><id>http://parededefogo.com.br/</id><updated>2015-02-26T11:13:00-03:00</updated><entry><title>Using the 'tcpdump' utility on IPSO OS to troubleshoot network problems</title><link href="http://parededefogo.com.br/2015/02/using-the-tcpdump-utility-on-ipso-os-to-troubleshoot-network-problems/" rel="alternate"></link><updated>2015-02-26T11:13:00-03:00</updated><author><name>talmeida</name></author><id>tag:parededefogo.com.br,2015-02-26:2015/02/using-the-tcpdump-utility-on-ipso-os-to-troubleshoot-network-problems/</id><summary type="html">&lt;p&gt;I found today a very useful article. It's worth a try!&lt;/p&gt;
 &lt;p&gt;http://www.kehlet.cx/articles/186.html&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;tcpdump&lt;/code&gt; command will sniff for Cisco switches' &lt;a href="http://en.wikipedia.org/wiki/Cisco_Discovery_Protocol"&gt;Cisco Discovery
 Protocol (CDP)&lt;/a&gt;
@@ -39,7 +39,7 @@ other device specific information.&lt;/p&gt;
 &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;packets&lt;/span&gt; &lt;span class="n"&gt;captured&lt;/span&gt;
 &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="n"&gt;packets&lt;/span&gt; &lt;span class="n"&gt;received&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;
 &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="n"&gt;packets&lt;/span&gt; &lt;span class="n"&gt;dropped&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt; &lt;span class="n"&gt;kernel&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="cdp"></category><category term="checkpoint"></category><category term="tcpdump"></category></entry><entry><title>Como habilitar SCP no SPLAT (SecurePlatform)</title><link href="http://parededefogo.com.br/2012/04/04/como-habilitar-scp-no-splat-secureplatform/" rel="alternate"></link><updated>2012-04-04T15:45:00-03:00</updated><author><name>talmeida</name></author><id>tag:parededefogo.com.br,2012-04-04:2012/04/04/como-habilitar-scp-no-splat-secureplatform/</id><summary type="html">&lt;p&gt;Quem um dia precisou fazer uma cópia usando o scp de um servidor SPLAT e
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="cdp"></category><category term="checkpoint"></category><category term="tcpdump"></category></entry><entry><title>Como habilitar SCP no SPLAT (SecurePlatform)</title><link href="http://parededefogo.com.br/2012/04/como-habilitar-scp-no-splat-secureplatform/" rel="alternate"></link><updated>2012-04-04T15:45:00-03:00</updated><author><name>talmeida</name></author><id>tag:parededefogo.com.br,2012-04-04:2012/04/como-habilitar-scp-no-splat-secureplatform/</id><summary type="html">&lt;p&gt;Quem um dia precisou fazer uma cópia usando o scp de um servidor SPLAT e
 se deu conta que não era possível?&lt;/p&gt;
 &lt;p&gt;Bom nesse artigo vou mostrar 2 passos para habilitar copia de arquivos
 via SCP no SPLAT:&lt;/p&gt;
@@ -58,7 +58,7 @@ arquivo:&lt;/p&gt;
 &lt;dt&gt;admin&lt;/dt&gt;
 &lt;dd&gt;x!&lt;/dd&gt;
 &lt;/dl&gt;
-&lt;p&gt;Pronto, seu servidor SPLAT ja está pronto para receber conexões SCP.&lt;/p&gt;</summary><category term="splat"></category></entry><entry><title>Listando qual VLAN está em qual contexto de um firewall VSX</title><link href="http://parededefogo.com.br/2012/03/01/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/" rel="alternate"></link><updated>2012-03-01T15:02:00-03:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2012-03-01:2012/03/01/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/</id><summary type="html">&lt;p&gt;Em um firewall ASA com multiplos contextos você pode achar qual VLAN
+&lt;p&gt;Pronto, seu servidor SPLAT ja está pronto para receber conexões SCP.&lt;/p&gt;</summary><category term="splat"></category></entry><entry><title>Listando qual VLAN está em qual contexto de um firewall VSX</title><link href="http://parededefogo.com.br/2012/03/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/" rel="alternate"></link><updated>2012-03-01T15:02:00-03:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2012-03-01:2012/03/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/</id><summary type="html">&lt;p&gt;Em um firewall ASA com multiplos contextos você pode achar qual VLAN
 está associada com qual contexto com esses comandos:&lt;br /&gt;
 changeto system&lt;br /&gt;
 show context (esse comando mostrará a lista de contextos e as VLANs
@@ -85,7 +85,7 @@ localhost eth0.701 4.4.5.101 255.255.0.0&lt;br /&gt;
 localhost eth1.702 2.2.2.1 255.255.254.0&lt;br /&gt;
 localhost eth1.703 3.3.3.1 255.255.254.0&lt;/p&gt;
 &lt;p&gt;Nesse caso nós temos as VLANs 700 e 701 na interface eth0 do contexto 1
-e as VLANs 702 e 703 na interface eth1 do contexto 1.&lt;/p&gt;</summary><category term="context"></category><category term="vsx"></category></entry><entry><title>NTP e VRRP no IPSO</title><link href="http://parededefogo.com.br/2012/03/01/ntp-e-vrrp-no-ipso/" rel="alternate"></link><updated>2012-03-01T12:02:00-03:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2012-03-01:2012/03/01/ntp-e-vrrp-no-ipso/</id><summary type="html">&lt;p&gt;É recomendável usar NTP com VRRP ou IP Clustering?&lt;br /&gt;
+e as VLANs 702 e 703 na interface eth1 do contexto 1.&lt;/p&gt;</summary><category term="context"></category><category term="vsx"></category></entry><entry><title>NTP e VRRP no IPSO</title><link href="http://parededefogo.com.br/2012/03/ntp-e-vrrp-no-ipso/" rel="alternate"></link><updated>2012-03-01T12:02:00-03:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2012-03-01:2012/03/ntp-e-vrrp-no-ipso/</id><summary type="html">&lt;p&gt;É recomendável usar NTP com VRRP ou IP Clustering?&lt;br /&gt;
 Baseado nas soluções: sk40322 e sk41502&lt;br /&gt;
 Aplicável à: IPSO&lt;/p&gt;
 &lt;p&gt;* Muitas vezes é um requerido de um firewall em um ambiente de produção
@@ -128,7 +128,7 @@ Minute: 15&lt;/p&gt;
 &lt;p&gt;Obs: devido a uma limitação do Voyager, não é possível usar o "Job
 Scheduler" para agendar qualquer tarefa para ocorrer com uma frequência
 maior do que uma vez por dia. Não é necessário atualizar o horário com
-ntpdate mais do que uma vez por dia.&lt;/p&gt;</summary><category term="ipso vrrp ntp"></category></entry><entry><title>Como evitar o IPS/Web Intelligence para hosts específicos</title><link href="http://parededefogo.com.br/2011/12/05/como-evitar-o-ipsweb-intelligence-para-hosts-especificos/" rel="alternate"></link><updated>2011-12-05T10:19:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-12-05:2011/12/05/como-evitar-o-ipsweb-intelligence-para-hosts-especificos/</id><summary type="html">&lt;p&gt;Baseado na solução:  sk31918&lt;br /&gt;
+ntpdate mais do que uma vez por dia.&lt;/p&gt;</summary><category term="ipso vrrp ntp"></category></entry><entry><title>Como evitar o IPS/Web Intelligence para hosts específicos</title><link href="http://parededefogo.com.br/2011/12/como-evitar-o-ipsweb-intelligence-para-hosts-especificos/" rel="alternate"></link><updated>2011-12-05T10:19:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-12-05:2011/12/como-evitar-o-ipsweb-intelligence-para-hosts-especificos/</id><summary type="html">&lt;p&gt;Baseado na solução:  sk31918&lt;br /&gt;
 Aplicável à:   R70, NGX R65, R71, R75&lt;/p&gt;
 &lt;p&gt;Sintomas&lt;/p&gt;
 &lt;p&gt;Mensagem de erro "Invalid lf-cr combination in the http header" no
@@ -241,7 +241,7 @@ ADD_INSPECTION_WITH_PARAMS(SPII_WEBSEC_ID, sr10))&lt;/p&gt;
 &lt;p&gt;) or ACTIVATE_WS_GLOBAL_DEFENSE&lt;/p&gt;
 &lt;p&gt;Tenha certeza de sempre adicionar a parte (src not in IPList,dst not in
 IPList) depois de #define &amp;lt;nome da função&amp;gt;.&lt;/p&gt;
-&lt;p&gt;Instale a politica de segurança para ativar as alterações.&lt;/p&gt;</summary><category term="ips"></category><category term="smartdefense"></category></entry><entry><title>Como migrar a tabela de roteamento de um firewall SPLAT ou Linux com iproute2</title><link href="http://parededefogo.com.br/2011/11/18/como-migrar-a-tabela-de-roteamento-de-um-firewall-splat-ou-linux-com-iproute2/" rel="alternate"></link><updated>2011-11-18T14:46:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-11-18:2011/11/18/como-migrar-a-tabela-de-roteamento-de-um-firewall-splat-ou-linux-com-iproute2/</id><summary type="html">&lt;p&gt;No sistema antigo siga os seguintes passos:&lt;/p&gt;
+&lt;p&gt;Instale a politica de segurança para ativar as alterações.&lt;/p&gt;</summary><category term="ips"></category><category term="smartdefense"></category></entry><entry><title>Como migrar a tabela de roteamento de um firewall SPLAT ou Linux com iproute2</title><link href="http://parededefogo.com.br/2011/11/como-migrar-a-tabela-de-roteamento-de-um-firewall-splat-ou-linux-com-iproute2/" rel="alternate"></link><updated>2011-11-18T14:46:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-11-18:2011/11/como-migrar-a-tabela-de-roteamento-de-um-firewall-splat-ou-linux-com-iproute2/</id><summary type="html">&lt;p&gt;No sistema antigo siga os seguintes passos:&lt;/p&gt;
 &lt;p&gt;Execute o comando: ip route show | grep via&lt;/p&gt;
 &lt;p&gt;Copie a saída do comando para um arquivo ou redirecione-a para um
 arquivo adicionando "&amp;gt; rotas.txt" ao comando anterior&lt;/p&gt;
@@ -265,7 +265,7 @@ rotas_para_importar no final da inicialização do sistema. Por exemplo
 no Slackware você deve adicionar essa linha
 “/caminho/para/rotas_para_importar” no arquivo /etc/rc.d/rc.local, já
 no Ubuntu essa linha pode ser adicionada em /etc/rc.local. Esse arquivo
-varia em cada distribuição.&lt;/p&gt;</summary><category term="splat"></category></entry><entry><title>Guia de referência fw monitor</title><link href="http://parededefogo.com.br/2011/11/11/guia-de-referencia-fw-monitor/" rel="alternate"></link><updated>2011-11-11T15:27:00-02:00</updated><author><name>talmeida</name></author><id>tag:parededefogo.com.br,2011-11-11:2011/11/11/guia-de-referencia-fw-monitor/</id><summary type="html">&lt;p&gt;Este comando permite que você monitore o tráfego de rede passando
+varia em cada distribuição.&lt;/p&gt;</summary><category term="splat"></category></entry><entry><title>Guia de referência fw monitor</title><link href="http://parededefogo.com.br/2011/11/guia-de-referencia-fw-monitor/" rel="alternate"></link><updated>2011-11-11T15:27:00-02:00</updated><author><name>talmeida</name></author><id>tag:parededefogo.com.br,2011-11-11:2011/11/guia-de-referencia-fw-monitor/</id><summary type="html">&lt;p&gt;Este comando permite que você monitore o tráfego de rede passando
 através do modulo de Kernel do Firewall. Também mostra a você como o
 tráfego deve parecer na perspectiva de várias partes de um Firewall e
 pode monitorar todas as interfaces simultaneamente. É muito importante
@@ -348,7 +348,7 @@ esperado poderá ocorrer (incluindo crash do sistema).&lt;/p&gt;
 &lt;p&gt;Pacotes são desfragmentados quando saem do Firewall tanto em entrada e
 saída.&lt;/p&gt;
 &lt;p&gt;Qualquer ação que carregue, descarregue ou instale uma política vai
-fazer com que o fw monitor pare.&lt;/p&gt;</summary><category term="fw monitor"></category><category term="INSPECT"></category></entry><entry><title>Adicionando rotas estáticas no SPLAT usando sysconfig</title><link href="http://parededefogo.com.br/2011/11/06/adicionando-rotas-estaticas-no-splat-usando-sysconfig/" rel="alternate"></link><updated>2011-11-06T11:05:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-11-06:2011/11/06/adicionando-rotas-estaticas-no-splat-usando-sysconfig/</id><summary type="html">&lt;p&gt;Para adicionar rotas estáticas no SPLAT - SecurePlataform siga esses
+fazer com que o fw monitor pare.&lt;/p&gt;</summary><category term="fw monitor"></category><category term="INSPECT"></category></entry><entry><title>Adicionando rotas estáticas no SPLAT usando sysconfig</title><link href="http://parededefogo.com.br/2011/11/adicionando-rotas-estaticas-no-splat-usando-sysconfig/" rel="alternate"></link><updated>2011-11-06T11:05:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-11-06:2011/11/adicionando-rotas-estaticas-no-splat-usando-sysconfig/</id><summary type="html">&lt;p&gt;Para adicionar rotas estáticas no SPLAT - SecurePlataform siga esses
 passos:&lt;/p&gt;
 &lt;p&gt;Apartir do console no SPLAT ou em uma janela de terminal, execute o
 comando: sysconfig.&lt;/p&gt;
@@ -367,7 +367,7 @@ dessa rota).&lt;/p&gt;
 Configuration) para verificar se as rotas foram realmente adicionadas.&lt;/p&gt;
 &lt;p&gt;5. Escolha 'Done' e então 'Exit' para sair do sysconfig.&lt;/p&gt;
 &lt;p&gt;Baseado na solução sk21474.&lt;br /&gt;
-Se aplica à NG, NGX R60, NGX R61, NG AI.&lt;/p&gt;</summary><category term="splat"></category></entry><entry><title>Como adicionar e salvar rotas no SPLAT sem usar as ferramentas 'sysconfig' ou 'webui'</title><link href="http://parededefogo.com.br/2011/11/06/como-adicionar-e-salvar-rotas-no-splat-sem-usar-as-ferramentas-sysconfig-ou-webui/" rel="alternate"></link><updated>2011-11-06T01:02:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-11-06:2011/11/06/como-adicionar-e-salvar-rotas-no-splat-sem-usar-as-ferramentas-sysconfig-ou-webui/</id><summary type="html">&lt;p&gt;A sintaxe para adicionar rotas em um firewall CheckPoint rodando SPLAT
+Se aplica à NG, NGX R60, NGX R61, NG AI.&lt;/p&gt;</summary><category term="splat"></category></entry><entry><title>Como adicionar e salvar rotas no SPLAT sem usar as ferramentas 'sysconfig' ou 'webui'</title><link href="http://parededefogo.com.br/2011/11/como-adicionar-e-salvar-rotas-no-splat-sem-usar-as-ferramentas-sysconfig-ou-webui/" rel="alternate"></link><updated>2011-11-06T01:02:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-11-06:2011/11/como-adicionar-e-salvar-rotas-no-splat-sem-usar-as-ferramentas-sysconfig-ou-webui/</id><summary type="html">&lt;p&gt;A sintaxe para adicionar rotas em um firewall CheckPoint rodando SPLAT
 pela linha de comando (CLI) é a seguinte:&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;ip route add &amp;lt;IP/SUBNET&amp;gt; via GW&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;Obs: Esse comando funciona em qualquer distribuição Linux que tenha o
@@ -490,7 +490,7 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 
 &lt;p&gt;Basedo na solução sk32170&lt;br /&gt;
 Se aplica à SecurePlatform, SecurePlatform 2.6 executando NGX R65, R70,
-R71, R75&lt;/p&gt;</summary><category term="splat"></category></entry><entry><title>CST - Configuration Summary Tool</title><link href="http://parededefogo.com.br/2011/11/04/cst-configuration-summary-tool/" rel="alternate"></link><updated>2011-11-04T16:00:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-11-04:2011/11/04/cst-configuration-summary-tool/</id><summary type="html">&lt;p&gt;A ferramenta de sumário de configuração (CST - Configuration Summary
+R71, R75&lt;/p&gt;</summary><category term="splat"></category></entry><entry><title>CST - Configuration Summary Tool</title><link href="http://parededefogo.com.br/2011/11/cst-configuration-summary-tool/" rel="alternate"></link><updated>2011-11-04T16:00:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-11-04:2011/11/cst-configuration-summary-tool/</id><summary type="html">&lt;p&gt;A ferramenta de sumário de configuração (CST - Configuration Summary
 Tool) do IPSO é um script localizado no diretório /etc, ela cria um
 arquivo de sumário da configuração atual do seu sistema operacional IPSO
 no formato HTML.&lt;/p&gt;
@@ -609,7 +609,7 @@ MD5 (cst-meu-firewall-11.04.2011-0825.tar.gz) =
 &lt;p&gt;Você pode fazer download de um arquivo CST de exemplo no link: &lt;a href="https://supportcenter.checkpoint.com/supportcenter/portal/user/anon/page/default.psml/media-type/html?action=portlets.DCFileAction&amp;amp;eventSubmit_doGetdcdetails=&amp;amp;fileid=9816"&gt;Arquivo
 CST de
 exemplo&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Até mais!&lt;/p&gt;</summary><category term="ipso"></category></entry><entry><title>Removendo uma entrada específica da tabela de conexões</title><link href="http://parededefogo.com.br/2011/10/21/removendo-uma-entrada-especifica-da-tabela-de-conexoes/" rel="alternate"></link><updated>2011-10-21T18:02:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-10-21:2011/10/21/removendo-uma-entrada-especifica-da-tabela-de-conexoes/</id><summary type="html">&lt;div&gt;
+&lt;p&gt;Até mais!&lt;/p&gt;</summary><category term="ipso"></category></entry><entry><title>Removendo uma entrada específica da tabela de conexões</title><link href="http://parededefogo.com.br/2011/10/removendo-uma-entrada-especifica-da-tabela-de-conexoes/" rel="alternate"></link><updated>2011-10-21T18:02:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-10-21:2011/10/removendo-uma-entrada-especifica-da-tabela-de-conexoes/</id><summary type="html">&lt;div&gt;
 
 Toda vez que uma conexão é aceita por um firewall CheckPoint essa
 conexão é colocada em uma tabela de conexões.
@@ -681,7 +681,7 @@ do firewall usando SAM.
 
 Até mais!
 
-&lt;/div&gt;</summary><category term="connections"></category></entry><entry><title>Por que o firewall muda a flag de alguns pacotes de SYN para ACK?</title><link href="http://parededefogo.com.br/2011/10/18/por-que-o-firewall-muda-a-flag-de-alguns-pacotes-de-syn-para-ack/" rel="alternate"></link><updated>2011-10-18T22:43:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-10-18:2011/10/18/por-que-o-firewall-muda-a-flag-de-alguns-pacotes-de-syn-para-ack/</id><summary type="html">&lt;p&gt;Sintoma:&lt;/p&gt;
+&lt;/div&gt;</summary><category term="connections"></category></entry><entry><title>Por que o firewall muda a flag de alguns pacotes de SYN para ACK?</title><link href="http://parededefogo.com.br/2011/10/por-que-o-firewall-muda-a-flag-de-alguns-pacotes-de-syn-para-ack/" rel="alternate"></link><updated>2011-10-18T22:43:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-10-18:2011/10/por-que-o-firewall-muda-a-flag-de-alguns-pacotes-de-syn-para-ack/</id><summary type="html">&lt;p&gt;Sintoma:&lt;/p&gt;
 &lt;p&gt;Um pacote com a flag SYN enviado para o firewall tem a flag alterada
 para ACK ao sair  do firewall&lt;/p&gt;
 &lt;p&gt;Causa:&lt;/p&gt;
@@ -730,7 +730,7 @@ comportamento das novas conexões. A conexão deve ser removida da tabela
 de conexões ou deve atingir o tempo de timeout antes que esse
 comportamento mude.&lt;/p&gt;
 &lt;p&gt;Baseado na solução:
-&lt;a href="https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&amp;amp;solutionid=sk39455&amp;amp;js_peid=P-114a7bc3b09-10006&amp;amp;partition=Advanced&amp;amp;product=Security"&gt;https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&amp;amp;solutionid=sk39455&amp;amp;js_peid=P-114a7bc3b09-10006&amp;amp;partition=Advanced&amp;amp;product=Security&lt;/a&gt;&lt;/p&gt;</summary><category term="smart_conn_reuse"></category></entry><entry><title>Guia de Referência Rápida IPSO (Comandos mais utilizados)</title><link href="http://parededefogo.com.br/2011/10/18/guia-de-referencia-rapida-ipso-comandos-mais-utilizados/" rel="alternate"></link><updated>2011-10-18T22:41:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-10-18:2011/10/18/guia-de-referencia-rapida-ipso-comandos-mais-utilizados/</id><summary type="html">&lt;p&gt;Este é um guia de referência rápida para ser utilizado em Firewalls que
+&lt;a href="https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&amp;amp;solutionid=sk39455&amp;amp;js_peid=P-114a7bc3b09-10006&amp;amp;partition=Advanced&amp;amp;product=Security"&gt;https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&amp;amp;solutionid=sk39455&amp;amp;js_peid=P-114a7bc3b09-10006&amp;amp;partition=Advanced&amp;amp;product=Security&lt;/a&gt;&lt;/p&gt;</summary><category term="smart_conn_reuse"></category></entry><entry><title>Guia de Referência Rápida IPSO (Comandos mais utilizados)</title><link href="http://parededefogo.com.br/2011/10/guia-de-referencia-rapida-ipso-comandos-mais-utilizados/" rel="alternate"></link><updated>2011-10-18T22:41:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-10-18:2011/10/guia-de-referencia-rapida-ipso-comandos-mais-utilizados/</id><summary type="html">&lt;p&gt;Este é um guia de referência rápida para ser utilizado em Firewalls que
 rodam IPSO formalmente denominados de Nokia appliances. Você pode
 gerenciar o firewall CheckPoint IP appliance (Nokia), tanto a partir de
 linha de comando (CLISH) ou a partir do Voyager (Web GUI). Os comandos a
@@ -782,7 +782,7 @@ set date timezone-city “Greenwich (GMT)”&lt;br /&gt;
 —Adicionando hostname&lt;br /&gt;
 set hostname testbox&lt;br /&gt;
 —Adicionando uma entrada no arquivo Hosts&lt;br /&gt;
-add host name testbox ipv4 192.168.29.54&lt;/p&gt;</summary><category term="ipso"></category></entry><entry><title>Qual é a diferença entre debug, kdebug e zdebug?</title><link href="http://parededefogo.com.br/2011/10/18/qual-e-a-diferenca-entre-debug-kdebug-e-zdebug/" rel="alternate"></link><updated>2011-10-18T22:40:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-10-18:2011/10/18/qual-e-a-diferenca-entre-debug-kdebug-e-zdebug/</id><summary type="html">&lt;p&gt;O comando &lt;strong&gt;fw ctl&lt;/strong&gt; pode ser usado para depurar vários aspectos de um
+add host name testbox ipv4 192.168.29.54&lt;/p&gt;</summary><category term="ipso"></category></entry><entry><title>Qual é a diferença entre debug, kdebug e zdebug?</title><link href="http://parededefogo.com.br/2011/10/qual-e-a-diferenca-entre-debug-kdebug-e-zdebug/" rel="alternate"></link><updated>2011-10-18T22:40:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-10-18:2011/10/qual-e-a-diferenca-entre-debug-kdebug-e-zdebug/</id><summary type="html">&lt;p&gt;O comando &lt;strong&gt;fw ctl&lt;/strong&gt; pode ser usado para depurar vários aspectos de um
 firewall CheckPoint.&lt;/p&gt;
 &lt;p&gt;O propósito desse documento é explicar o uso dos comandos fw ctl
 &lt;strong&gt;debug&lt;/strong&gt;, &lt;strong&gt;kdebug&lt;/strong&gt; e &lt;strong&gt;zdebug&lt;/strong&gt; e suas diferenças.&lt;/p&gt;
