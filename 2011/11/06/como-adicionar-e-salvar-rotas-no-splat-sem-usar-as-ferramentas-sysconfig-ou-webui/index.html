@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Como adicionar e salvar rotas no SPLAT sem usar as ferramentas 'sysconfig' ou 'webui'</title>
+        <link rel="stylesheet" href="http://parededefogo.com.br/theme/css/main.css" />
+        <link href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Parede de Fogo Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://parededefogo.com.br/">Parede de Fogo  <strong>O ponto de encontro dos profissionais de segurança da informação</strong></a></h1>
+                <nav><ul>
+                    <li><a href="http://parededefogo.com.br/pages/man-tcpdump/">man tcpdump</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://parededefogo.com.br/2011/11/06/como-adicionar-e-salvar-rotas-no-splat-sem-usar-as-ferramentas-sysconfig-ou-webui/" rel="bookmark"
+           title="Permalink to Como adicionar e salvar rotas no SPLAT sem usar as ferramentas 'sysconfig' ou 'webui'">Como adicionar e salvar rotas no SPLAT sem usar as ferramentas 'sysconfig' ou 'webui'</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-11-06T01:02:00-02:00">
+                Published: Sun 06 November 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/splat/">splat</a> </p>
+</footer><!-- /.post-info -->      <p>A sintaxe para adicionar rotas em um firewall CheckPoint rodando SPLAT
+pela linha de comando (CLI) é a seguinte:</p>
+<p><code>ip route add &lt;IP/SUBNET&gt; via GW</code></p>
+<p>Obs: Esse comando funciona em qualquer distribuição Linux que tenha o
+pacote iproute2 instalado. O pacote iproute2 deve subistituir as
+ferramentas clássicas "ifconfig", "route" e "arp".<br />
+<!--more-->Detalhes da sintaxe:</p>
+<div class="highlight"><pre><span class="nl">Uso</span><span class="p">:</span> <span class="n">ip</span> <span class="n">route</span> <span class="p">{</span> <span class="n">list</span> <span class="o">|</span> <span class="n">flush</span> <span class="p">}</span> <span class="n">SELETOR</span>
+
+       <span class="n">ip</span> <span class="n">route</span> <span class="n">get</span> <span class="n">ADDRESS</span> <span class="p">[</span> <span class="n">from</span> <span class="n">ENDERE</span><span class="err">Ç</span><span class="n">O</span> <span class="n">iif</span> <span class="n">STRING</span> <span class="p">]</span>
+
+                            <span class="p">[</span> <span class="n">oif</span> <span class="n">STRING</span> <span class="p">]</span>  <span class="p">[</span> <span class="n">tos</span> <span class="n">TOS</span> <span class="p">]</span>
+
+       <span class="n">ip</span> <span class="n">route</span> <span class="p">{</span> <span class="n">add</span> <span class="o">|</span> <span class="n">del</span> <span class="o">|</span> <span class="n">change</span> <span class="o">|</span> <span class="n">append</span> <span class="o">|</span> <span class="n">replace</span> <span class="o">|</span> <span class="n">monitor</span> <span class="p">}</span> <span class="n">ROTA</span>
+
+<span class="nl">SELETOR</span> <span class="p">:</span><span class="o">=</span> <span class="p">[</span> <span class="n">root</span> <span class="n">PREFIXO</span> <span class="p">]</span> <span class="p">[</span> <span class="n">match</span> <span class="n">PREFIXO</span> <span class="p">]</span> <span class="p">[</span> <span class="n">exact</span> <span class="n">PREFIXO</span> <span class="p">]</span>
+
+            <span class="p">[</span> <span class="n">table</span> <span class="n">TABLE_ID</span> <span class="p">]</span> <span class="p">[</span> <span class="n">proto</span> <span class="n">RTPROTO</span> <span class="p">]</span>
+
+            <span class="p">[</span> <span class="n">type</span> <span class="n">TIPO</span> <span class="p">]</span> <span class="p">[</span> <span class="n">scope</span> <span class="n">ESCOPO</span> <span class="p">]</span>
+
+<span class="nl">ROTA</span> <span class="p">:</span><span class="o">=</span> <span class="n">NODE_SPEC</span> <span class="p">[</span> <span class="n">INFO_SPEC</span> <span class="p">]</span>
+
+<span class="nl">NODE_SPEC</span> <span class="p">:</span><span class="o">=</span> <span class="p">[</span> <span class="n">TIPO</span> <span class="p">]</span> <span class="n">PREFIXO</span> <span class="p">[</span> <span class="n">tos</span> <span class="n">TOS</span> <span class="p">]</span>
+
+             <span class="p">[</span> <span class="n">table</span> <span class="n">ID_DA_TABELA</span> <span class="p">]</span> <span class="p">[</span> <span class="n">proto</span> <span class="n">RTPROTO</span> <span class="p">]</span>
+
+             <span class="p">[</span> <span class="n">scope</span> <span class="n">ESCOPO</span> <span class="p">]</span> <span class="p">[</span> <span class="n">metric</span> <span class="n">M</span><span class="err">É</span><span class="n">TRICA</span> <span class="p">]</span>
+
+<span class="nl">INFO_SPEC</span> <span class="p">:</span><span class="o">=</span> <span class="n">NH</span> <span class="n">OP</span><span class="err">ÇÕ</span><span class="n">ES</span> <span class="n">FLAGS</span> <span class="p">[</span> <span class="n">nexthop</span> <span class="n">NH</span> <span class="p">]...</span>
+
+<span class="nl">NH</span> <span class="p">:</span><span class="o">=</span> <span class="p">[</span> <span class="n">via</span> <span class="n">ENDERE</span><span class="err">Ç</span><span class="n">O</span> <span class="p">]</span> <span class="p">[</span> <span class="n">dev</span> <span class="n">STRING</span> <span class="p">]</span> <span class="p">[</span> <span class="n">weight</span> <span class="n">N</span><span class="err">Ú</span><span class="n">MERO</span> <span class="p">]</span> <span class="n">NHFLAGS</span>
+
+<span class="n">OP</span><span class="err">ÇÕ</span><span class="nl">ES</span> <span class="p">:</span><span class="o">=</span> <span class="n">FLAGS</span> <span class="p">[</span> <span class="n">mtu</span> <span class="n">N</span><span class="err">Ú</span><span class="n">MERO</span> <span class="p">]</span> <span class="p">[</span> <span class="n">advmss</span> <span class="n">N</span><span class="err">Ú</span><span class="n">MERO</span> <span class="p">]</span>
+
+           <span class="p">[</span> <span class="n">rtt</span> <span class="n">N</span><span class="err">Ú</span><span class="n">MERO</span> <span class="p">]</span> <span class="p">[</span> <span class="n">rttvar</span> <span class="n">N</span><span class="err">Ú</span><span class="n">MERO</span> <span class="p">]</span>
+
+           <span class="p">[</span> <span class="n">window</span> <span class="n">N</span><span class="err">Ú</span><span class="n">MERO</span><span class="p">]</span> <span class="p">[</span> <span class="n">cwnd</span> <span class="n">N</span><span class="err">Ú</span><span class="n">MERO</span> <span class="p">]</span> <span class="p">[</span> <span class="n">ssthresh</span> <span class="n">REALM</span> <span class="p">]</span>
+
+           <span class="p">[</span> <span class="n">realms</span> <span class="n">REALM</span> <span class="p">]</span>
+
+<span class="nl">TIPO</span> <span class="p">:</span><span class="o">=</span> <span class="p">[</span> <span class="n">unicast</span> <span class="o">|</span> <span class="n">local</span> <span class="o">|</span> <span class="n">broadcast</span> <span class="o">|</span> <span class="n">multicast</span> <span class="o">|</span> <span class="n">throw</span> <span class="o">|</span>
+
+          <span class="n">unreachable</span> <span class="o">|</span> <span class="n">prohibit</span> <span class="o">|</span> <span class="n">blackhole</span> <span class="o">|</span> <span class="n">nat</span> <span class="p">]</span>
+
+<span class="nl">ID_DA_TABELA</span> <span class="p">:</span><span class="o">=</span> <span class="p">[</span> <span class="n">local</span> <span class="o">|</span> <span class="n">main</span> <span class="o">|</span> <span class="k">default</span> <span class="o">|</span> <span class="n">all</span> <span class="o">|</span> <span class="n">N</span><span class="err">Ú</span><span class="n">MERO</span> <span class="p">]</span>
+
+<span class="nl">ESCOPO</span> <span class="p">:</span><span class="o">=</span> <span class="p">[</span> <span class="n">host</span> <span class="o">|</span> <span class="n">link</span> <span class="o">|</span> <span class="n">global</span> <span class="o">|</span> <span class="n">N</span><span class="err">Ú</span><span class="n">MERO</span> <span class="p">]</span>
+
+<span class="nl">FLAGS</span> <span class="p">:</span><span class="o">=</span> <span class="p">[</span> <span class="n">equalize</span> <span class="p">]</span>
+
+<span class="nl">NHFLAGS</span> <span class="p">:</span><span class="o">=</span> <span class="p">[</span> <span class="n">onlink</span> <span class="o">|</span> <span class="n">pervasive</span> <span class="p">]</span>
+
+<span class="nl">RTPROTO</span> <span class="p">:</span><span class="o">=</span> <span class="p">[</span> <span class="n">kernel</span> <span class="o">|</span> <span class="n">boot</span> <span class="o">|</span> <span class="k">static</span> <span class="o">|</span> <span class="n">N</span><span class="err">Ú</span><span class="n">MERO</span> <span class="p">]</span>
+</pre></div>
+
+
+<p><strong>Exemplo:</strong></p>
+<div class="highlight"><pre>[Expert@R61]# ip route add 2.1.1.0/24 via 194.29.42.179
+
+Kernel IP routing table
+
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+
+224.0.0.2       0.0.0.0         255.255.255.255 UHD   0      0        0 lo
+
+127.0.0.1       0.0.0.0         255.255.255.255 UH    0      0        0 lo
+
+194.29.42.128   0.0.0.0         255.255.255.128 U     0      0        0 eth0
+
+20.20.20.0      0.0.0.0         255.255.255.0   U     0      0        0 eth1
+
+10.10.10.0      20.20.20.114    255.255.255.0   UG    0      0        0 eth1
+
+2.1.1.0         194.29.42.179   255.255.255.0   UG    0      0        0 eth0
+
+192.168.121.0   0.0.0.0         255.255.255.0   U     0      0        0 eth2
+
+127.0.0.0       -               255.0.0.0       !D    0      -        0 -
+
+0.0.0.0         194.29.42.129   0.0.0.0         UG    0      0        0 eth0
+</pre></div>
+
+
+<p>Para salvar a configuração (note que essa operação faz a alteração ficar
+persistente, ou seja a rota não será perdida após um reboot), faça o
+seguinte:</p>
+<div class="highlight"><pre>[Expert@R61]# route --save
+
+Expert@R61]# reboot
+
+Are you sure? (y/n) y
+
+Broadcast message from root (ttyp0) (Mon Oct 23 04:11:40 2006):
+
+The system is going down for reboot NOW!
+
+Kernel IP routing table
+
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+
+224.0.0.2       0.0.0.0         255.255.255.255 UHD   0      0        0 lo
+
+127.0.0.1       0.0.0.0         255.255.255.255 UH    0      0        0 lo
+
+194.29.42.128   0.0.0.0         255.255.255.128 U     0      0        0 eth0
+
+20.20.20.0      0.0.0.0         255.255.255.0   U     0      0        0 eth1
+
+10.10.10.0      20.20.20.114    255.255.255.0   UG    0      0        0 eth1
+
+2.1.1.0         194.29.42.179   255.255.255.0   UG    0      0        0 eth0
+
+192.168.121.0   0.0.0.0         255.255.255.0   U     0      0        0 eth2
+
+127.0.0.0       -               255.0.0.0       !D    0      -        0 -
+
+0.0.0.0         194.29.42.129   0.0.0.0         UG    0      0        0 eth0
+</pre></div>
+
+
+<p>Basedo na solução sk32170<br />
+Se aplica à SecurePlatform, SecurePlatform 2.6 executando NGX R65, R70,
+R71, R75</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'parededefogo';
+        var disqus_identifier = '2011/11/06/como-adicionar-e-salvar-rotas-no-splat-sem-usar-as-ferramentas-sysconfig-ou-webui/';
+        var disqus_url = 'http://parededefogo.com.br/2011/11/06/como-adicionar-e-salvar-rotas-no-splat-sem-usar-as-ferramentas-sysconfig-ou-webui/';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//parededefogo.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/tdmsilvino">@tdmsilvino</a></li>
+                            <li><a href="https://twitter.com/almeida_t">@almeida_t</a></li>
+                            <li><a href="https://br.linkedin.com/in/tdmsilvino">LinkedIn</a></li>
+                            <li><a href="https://ie.linkedin.com/in/tiagodealmeida">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'parededefogo';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

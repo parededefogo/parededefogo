@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>CST - Configuration Summary Tool</title>
+        <link rel="stylesheet" href="http://parededefogo.com.br/theme/css/main.css" />
+        <link href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Parede de Fogo Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://parededefogo.com.br/">Parede de Fogo  <strong>O ponto de encontro dos profissionais de segurança da informação</strong></a></h1>
+                <nav><ul>
+                    <li><a href="http://parededefogo.com.br/pages/man-tcpdump/">man tcpdump</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://parededefogo.com.br/2011/11/04/cst-configuration-summary-tool/" rel="bookmark"
+           title="Permalink to CST - Configuration Summary Tool">CST - Configuration Summary Tool</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-11-04T16:00:00-02:00">
+                Published: Fri 04 November 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/ipso/">ipso</a> </p>
+</footer><!-- /.post-info -->      <p>A ferramenta de sumário de configuração (CST - Configuration Summary
+Tool) do IPSO é um script localizado no diretório /etc, ela cria um
+arquivo de sumário da configuração atual do seu sistema operacional IPSO
+no formato HTML.</p>
+<p>O CST está incluído no IPSO 3.8 build 20 e em todos as versões e
+atualizações subsequentes do IPSO. Se você está executando uma versão do
+IPSO que seja inferior à IPSO 3.8 build 20, você pode fazer o download
+do CST nesse link: <a href="https://supportcenter.checkpoint.com/supportcenter/portal/user/anon/page/default.psml/media-type/html?action=portlets.DCFileAction&amp;eventSubmit_doGetdcdetails=&amp;fileid=9815">CST Versão 02-24-04g para IPSO 3.5 até IPSO
+3.8</a>.</p>
+<p>O IPSO 6.1 e versões superiores inclue uma ferramenta chamada ECST, que
+é uma versão melhorada desta ferramenta. Essa ferramenta também está
+disponível separadamente para o IPSO 4.1 e 4.2. Veja o artigo em inglês
+<a href="https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&amp;solutionid=sk39913">sk39913 - Enhanced Configuration Summary Tool
+(ECST)</a>para
+mais informações.<br />
+<!--more-->CST versão 2007-09-26<br />
+Usage: cst [-small] [-nocpinfo] [-batch] [-o dir]</p>
+<p>-small<br />
+não captura certos arquivos (como logs do firewall e arquivos<br />
+vmcore) no entanto faz o arquivo cst resultante bem menor.<br />
+-nocpinfo<br />
+não executa cpinfo, in case it ends up hanging cst collection.</p>
+<p>-batch<br />
+não faz nenhuma pergunta (pode ser executado em plano de fundo)<br />
+-o dir<br />
+faz com que o diretório de saída seja "dir", requerido se estiver
+usando -batch</p>
+<p>O CST reporta o hash MD5 de arquivos chaves do sistema. Isso é
+importante se arquivos vmcore exsitem no sistema e se uma análise será
+realizada. A informação MD5 reportada pelo CST garante que o kernel e os
+módulos corretos são usados durante a analise.</p>
+<p>O CST pega todos os arquivos vmcore do kernel do IPSO do diretório
+/var/crash se ele existir no sistema. Para fazer uma análise do arquivos
+vmcore, o suporte deve requisitar os arquivos do diretório
+\$FWDIR/boot/modules/*.o do mesmo sistema onde os erros ocorreram. O
+arquivo de saída do eCST inclue os arquivos vmcore e também os arquivos
+*.o do sistema, eliminando assim a necessidade de pedir aqueles
+arquivos separadamente.</p>
+<p>O CST no IPSO 3.6 e superior, gera relatórios com histórico de
+utilização de CPU, utilização de memória, e tráfego de todas as
+interfaces. Esses relatóris contem gráficos em forma de pizza assim como
+todos os dados coletados.</p>
+<p>O CST também inclue informação de depuração sobre VRRP, RIP, OSPF, BGP,
+e DVMRP.</p>
+<p>Ambos CST/eCST e CPINFO incluem um dump completo da tabela de conexões.
+Em sistemas que tem uma tabela de conexões muito grande, coletar esses
+dados pode ser uma tarefa muito custosa. Isso pode acabar fazendo o
+script do CST ser executado continuamente e nunca terminar. Em sismtas
+que tem muita carga de utilização é melhor executar o CST com uma
+prioridade baixa. O comando"nice +20 cst" talvez seja  necessário em
+caixas que estejam extramamente ocupadas, isso forçará o CST a ser 
+executado com a menor prioridade possivel.</p>
+<p>Dependendo das condições do tráfego ativo ou do número de conexões, CST
+pode causar um maior uso da CPU e da memória no sistema enquanto está
+sendo executado.</p>
+<p>Ao executar o CST você verá mensagens parecidas com essas:</p>
+<p>meu-firewall[admin]# cst<br />
+IPSO 3.6x or earlier kernel found...<br />
+CST version 2006-12-26</p>
+<p>=============== N O T I C E:  VOYAGER LOCKS =========================<br />
+Please make sure you are logged out of Voyager.<br />
+CST gathers certain information from clish, which may not work<br />
+when there is a configuration lock in place established by an active<br />
+Voyager session.<br />
+=============== E N D   O F   N O T I C E    =========================</p>
+<p>Continue? [y]</p>
+<p>y<br />
+Output Directory? [.] /var/tmp<br />
+IPSO-4.2-BUILD111 detected...<br />
+Generating IPv4 configuration summary...done<br />
+Generating IPv6 configuration summary...done<br />
+Gathering cpu utilization data...done<br />
+Gathering memory utilization data...done<br />
+Gathering interface statistics...done<br />
+Gathering standard ipsoinfo data...done<br />
+Gathering additional ipso information...<br />
+vrrp data...done<br />
+route data...done<br />
+rip data...done<br />
+ospf data...done<br />
+bgp data...done<br />
+dvmrp data...done<br />
+pim data...done<br />
+...done<br />
+Gathering system logs......done<br />
+Processsing vmcore files...none on this system.....done<br />
+Gathering firewall data... Invalid flavour 'general' for product 'vpn'.
+Use 'cpstat' without any arguments to see supported products and
+flavours.<br />
+Invalid flavour 'fwz' for product 'vpn'. Use 'cpstat' without any
+arguments to see supported products and flavours.<br />
+...done<br />
+Fetching cpinfo...<br />
+cpinfo (I:0110):        Beginning ...</p>
+<p>cpinfo (I:0116):        Latest cpinfo build:
+http://www.checkpoint.com/techsupport/downloadsng/utilities.html#cpinfo<br />
+cpinfo (I:0112):        Embedding files ...</p>
+<p>cpinfo (I:0120):        Output file  -
+cst-meu-firewall-11.04.2011-0825/cpinfo.meu-firewall.11.04.2011-0825<br />
+cpinfo (I:0111):        Done<br />
+done<br />
+Creating index...done<br />
+Creating archive file...done</p>
+<p>Searching for system and process core files...done<br />
+Fetching routing daemon state...done<br />
+Compressing final archive...done</p>
+<p>Output saved to /var/tmp/cst-meu-firewall-11.04.2011-0825.tar.gz</p>
+<p>Depois que o arquivo de saída for gerado, no caso do exemplo acima
+/var/tmp/cst-meu-firewall-11.04.2011-0825.tar.gz, você pode usar o
+comando md5 para gerar um hash md5 antes de transferir o arquivo para
+uma localidade remota, depois de transferir o arquivo você pode usar o
+md5sum ou alguma ferramenta equivalente para garantir que o arquivo foi
+transferido corretamente.</p>
+<p>meu-firewall[admin]# md5 cst-meu-firewall-11.04.2011-0825.tar.gz<br />
+MD5 (cst-meu-firewall-11.04.2011-0825.tar.gz) =
+89a3dc1a5l60207d1b25b81a31cf8531</p>
+<p>Você pode fazer download de um arquivo CST de exemplo no link: <a href="https://supportcenter.checkpoint.com/supportcenter/portal/user/anon/page/default.psml/media-type/html?action=portlets.DCFileAction&amp;eventSubmit_doGetdcdetails=&amp;fileid=9816">Arquivo
+CST de
+exemplo</a>.</p>
+<p>Até mais!</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'parededefogo';
+        var disqus_identifier = '2011/11/04/cst-configuration-summary-tool/';
+        var disqus_url = 'http://parededefogo.com.br/2011/11/04/cst-configuration-summary-tool/';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//parededefogo.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/tdmsilvino">@tdmsilvino</a></li>
+                            <li><a href="https://twitter.com/almeida_t">@almeida_t</a></li>
+                            <li><a href="https://br.linkedin.com/in/tdmsilvino">LinkedIn</a></li>
+                            <li><a href="https://ie.linkedin.com/in/tiagodealmeida">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'parededefogo';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Parede de Fogo - smartdefense</title>
+        <link rel="stylesheet" href="http://parededefogo.com.br/theme/css/main.css" />
+        <link href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Parede de Fogo Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://parededefogo.com.br/">Parede de Fogo  <strong>O ponto de encontro dos profissionais de segurança da informação</strong></a></h1>
+                <nav><ul>
+                    <li><a href="http://parededefogo.com.br/pages/man-tcpdump/">man tcpdump</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://parededefogo.com.br/2011/12/05/como-evitar-o-ipsweb-intelligence-para-hosts-especificos/">Como evitar o IPS/Web Intelligence para hosts específicos</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2011-12-05T10:19:00-02:00">
+                Published: Mon 05 December 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/ips/">ips</a> <a href="http://parededefogo.com.br/tag/smartdefense/">smartdefense</a> </p>
+</footer><!-- /.post-info --><p>Baseado na solução:  sk31918<br />
+Aplicável à:   R70, NGX R65, R71, R75</p>
+<p>Sintomas</p>
+<p>Mensagem de erro "Invalid lf-cr combination in the http header" no
+SmartView Tracker.<br />
+Tráfego para a porta 80 é bloqueado com a mensagem de erro mostrada
+acima quando o Worm Catcher está habilitado.<br />
+Esse erro aparece para tráfego HTTP normal e para tráfego que não é
+HTTP e está usando a porta 80.</p>
+<p>Causa</p>
+<p>O módulo Web Intelligence traz algumas proteções, tais como o Worm
+Catcher e cabeçalhos de resposta ASCII-only, e isso implica que o
+tráfego precisa estar em conformidade com as RFCs do protocolo HTTP. Há
+verificações adicionais de segurança habilitados que não são
+explicitamente mencionados nas opções do IPS/Web Intelligence.</p>
+<p>Solução</p>
+<p>Cuidado: Se você aplicar a solução descrita a seguir, os endereços IP
+especificados, as portas e protocolos não serão inspecionados pelo
+IPS/Web Intelligence.</p>
+<!--more-->
+
+<p>Para a versão R71 e superiores:</p>
+<p>Para evitar o IPS para uma proteção específica:</p>
+<p>Abra o SmartDashboard e vá na aba IPS.<br />
+Vá na seção "Protections".<br />
+Encontre a proteção que você quer evitar.<br />
+Vá na aba "Network Exception".<br />
+Clique em "New".<br />
+Adicione uma nova exceção para essa proteção específica.<br />
+Instale a politica de segurança.</p>
+<p>Para evitar o IPS para uma rede inteira:</p>
+<p>Abra o SmartDashboard e vá na aba IPS.<br />
+Vá na aba "Network Exception".<br />
+Clique em "New".<br />
+dicione uma nova exceção para essa rede.<br />
+Instale a politica de segurança</p>
+<p>Para a versão R70:</p>
+<p>Use o mesmo procedimento da versão NGX R65. Note que para o R70 isso
+funciona quando uma dessas proteções do IPS estiverem habilitadas:</p>
+<p>HTTP format sizes<br />
+HTTP methods<br />
+HTTP request<br />
+HTTP Worm Catcher<br />
+HTTP directory traversal<br />
+HTTP cross sites scripting<br />
+HTTP SQL injection<br />
+HTTP command stealth<br />
+HTTP generic header spoofing<br />
+HTTP header rejection<br />
+HTTP buffer overflow<br />
+HTTP response<br />
+HTTP error concealment<br />
+HTTP LDAP injection<br />
+HTTP directory listing<br />
+URL logging and Quick UFP (from resource)<br />
+Uma das proteções p2p<br />
+Uma das proteções para mensagens instantâneas</p>
+<p>Nota:<br />
+Todas as alterações devem ser feitas no arquivo \$FWDIR/lib/asm.def.<br />
+selecione a caixa de seleção "Apply to all HTTP traffic" e instale a
+politica de segurança.</p>
+<p>Para NGX R65:</p>
+<p>Nota: faça todas as alterações no arquivo \$FWDIR/lib/asm.def no
+SmartCenter Server.</p>
+<p>Procedimento:</p>
+<p>Prepare uma lista de endereços IP para os quais você quer evitar as
+proteções do IPS/Web Intelligence.<br />
+Faça um backup do arquivo no SmartCenter Server.<br />
+Edite o arquivo no SmartCenter Server:<br />
+Adicione a seguinte linha no começo do arquivo (essa lista representa
+os endereços IP problemáticos):</p>
+<p>IPList = {&lt;IP1&gt;,&lt;IP2&gt;,&lt;IP3&gt;};</p>
+<p>Exemplo:</p>
+<p>IPList = {1.1.1.2,1.1.2.2};</p>
+<p>Nota: você também pode usar uma lista de endereços IP usando a seguinte
+sintaxe:</p>
+<p>IPList = {&lt;IP_inicio,IP_fim&gt;,&lt;IP_inicio,IP2_fim&gt;};</p>
+<p>Por exemplo:</p>
+<p>IPList = {&lt;1.1.1.1,1.1.1.5&gt;, &lt;2.2.2.2,2.2.3.3&gt;};</p>
+<p>Ache a linha a seguir:<br />
+#define ACTIVATE_WS_GLOBAL_DEFENSE (tcp, dport in
+http_services,ADD_INSPECTION(SPII_WEBSEC_ID)) or 1</p>
+<p>Altere a linha da seguinte forma:<br />
+#define ACTIVATE_WS_GLOBAL_DEFENSE (src not in IPList,dst not in
+IPList,tcp, dport in http_services,ADD_INSPECTION(SPII_WEBSEC_ID))
+or 1</p>
+<p>Ache a linha a seguir:<br />
+#define ACTIVATE_WS_SERVER_DEFENSE ( tcp, get from
+web_server_rules to sr10,
+ADD_INSPECTION_WITH_PARAMS(SPII_WEBSEC_ID, sr10)) or
+ACTIVATE_WS_GLOBAL_DEFENSE</p>
+<p>Altere a linha da seguinte forma:<br />
+#define ACTIVATE_WS_SERVER_DEFENSE ( src not in IPList,dst not in
+IPList,tcp, get from web_server_rules to sr10,
+ADD_INSPECTION_WITH_PARAMS(SPII_WEBSEC_ID, sr10)) or
+ACTIVATE_WS_GLOBAL_DEFENSE</p>
+<p>Nota:<br />
+No VPN-1 Power/UTM NGX R65 essas funções foram modificadas:</p>
+<p>#define ACTIVATE_WS_GLOBAL_DEFENSE</p>
+<p>(<br />
+src not in IPList,dst not in IPList,tcp, dport in http_services,</p>
+<p>((is_version_at_least(NGXENF_VER),call KFUNC_IS_NOTIFY&lt;&gt;) or
+ADD_INSPECTION(SPII_WEBSEC_ID))</p>
+<p>) or 1</p>
+<p>#define ACTIVATE_WS_SERVER_DEFENSE</p>
+<p>(<br />
+src not in IPList,dst not in IPList,tcp, get  from web_server_rules
+to sr10,</p>
+<p>((is_version_at_least(NGXENF_VER),call KFUNC_IS_NOTIFY&lt;&gt;) or
+ADD_INSPECTION_WITH_PARAMS(SPII_WEBSEC_ID, sr10))</p>
+<p>) or ACTIVATE_WS_GLOBAL_DEFENSE</p>
+<p>Tenha certeza de sempre adicionar a parte (src not in IPList,dst not in
+IPList) depois de #define &lt;nome da função&gt;.</p>
+<p>Instale a politica de segurança para ativar as alterações.</p><p>There are <a href="http://parededefogo.com.br/2011/12/05/como-evitar-o-ipsweb-intelligence-para-hosts-especificos/#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/tdmsilvino">@tdmsilvino</a></li>
+                            <li><a href="https://twitter.com/almeida_t">@almeida_t</a></li>
+                            <li><a href="https://br.linkedin.com/in/tdmsilvino">LinkedIn</a></li>
+                            <li><a href="https://ie.linkedin.com/in/tiagodealmeida">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'parededefogo';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

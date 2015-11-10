@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Guia de referência fw monitor</title>
+        <link rel="stylesheet" href="http://parededefogo.com.br/theme/css/main.css" />
+        <link href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Parede de Fogo Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://parededefogo.com.br/">Parede de Fogo  <strong>O ponto de encontro dos profissionais de segurança da informação</strong></a></h1>
+                <nav><ul>
+                    <li><a href="http://parededefogo.com.br/pages/man-tcpdump/">man tcpdump</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://parededefogo.com.br/2011/11/11/guia-de-referencia-fw-monitor/" rel="bookmark"
+           title="Permalink to Guia de referência fw monitor">Guia de referência fw monitor</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-11-11T15:27:00-02:00">
+                Published: Fri 11 November 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/talmeida/">talmeida</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/fw-monitor/">fw monitor</a> <a href="http://parededefogo.com.br/tag/inspect/">INSPECT</a> </p>
+</footer><!-- /.post-info -->      <p>Este comando permite que você monitore o tráfego de rede passando
+através do modulo de Kernel do Firewall. Também mostra a você como o
+tráfego deve parecer na perspectiva de várias partes de um Firewall e
+pode monitorar todas as interfaces simultaneamente. É muito importante
+salientar que o comando fw monitor não funciona na camada 2, ou seja,
+não é possível capturar endereços MAC com o fw monitor. O fw monitor
+funciona em qualquer plataforma onde o software Check Point estiver
+instalado.</p>
+<p>Uso:</p>
+<p><strong>fw monitor [-d] [-D] -e inspect-filter -f filter-file [-l len]
+[-m mask] [-x offset[,len]] [-o file]</strong></p>
+<p>Nota: SecureClient contém o comando srfw dentro de C:Program
+FilesCheckPointSecuRemote que também funciona como fw monitor (e.g. srfw
+monitor).</p>
+<p>Existem quatro "pontos de inspeção" quando um pacote passa através de um
+firewall Check Point (Security Gateway). Nós escolhemos onde queremos
+ver os pacotes com a opção -m:</p>
+<p>Antes que o firewall processe o pacote na  direção de entrada (i ou
+PREIN)</p>
+<p>Depois que o firewall processe o pacote na  direção de entrada (I ou
+POSTIN)</p>
+<p>Antes que o firewall processe o pacote na  direção de saída (o ou
+PREOUT)</p>
+<p>Depois que o firewall processe o pacote na  direção de saída (O ou
+POSTOUT)</p>
+<p><img alt="fwmonitor" src="http://parededefogo.com.br/images/fwmonitor-300x180.png" /></p>
+<!--more-->
+
+<p>Como podem haver muitos pacotes passando ao mesmo tempo pelo
+firewall, nós precisamos de alguma forma determinar quais pacotes
+queremos ver. Fazemos isso usando um filtro de inspeção (INSPECT filter)
+que pode ser digitado diretamente via linha de comando, ou via um
+arquivo INSPECT filter. Em qualquer dessas opções (-f ou -e) é
+necessário.</p>
+<p>Uma vez que você executou este comando, O firewall irá compilar o script
+INSPECT (via linha de comando, ou via arquivo), carregá-lo no modulo de
+kernel, e mostrar os pacotes na janela do terminal, ou num arquivo de
+saída no formato snoop. O processo do fw monitor irá continuar rodando
+até que um sinal de interrupção seja enviado para o programa (ex.:
+Ctrl-C), o que causará a parada imediata do processo fw monitor.</p>
+<p>O script INSPECT deverá retornar um "accept" para que os pacotes sejam
+mostrados. Qualquer outro código de retorno ocorrerá que os pacotes não
+serão mostrados. Se você quiser apenas olhar pacotes numa interface, não
+use <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#39;&#101;&#116;&#104;&#45;&#115;&#49;&#112;&#49;&#64;&#97;&#108;&#108;&#39;">&#39;&#101;&#116;&#104;&#45;&#115;&#49;&#112;&#49;&#64;&#97;&#108;&#108;&#39;</a> (por exemplo), e sim use 'direction=x,ifid=y' onde
+x=0 para entrada, 1 para saída, e y é o número da interface mostrado
+pelo comando fw ctl iflist. Não use os nomes de tabelas que são
+utilizadas pelo Check Point Firewall.</p>
+<p>Exemplos:</p>
+<p>O exemplo a seguir mostrará todos os pacotes TCP entrando e saindo do
+Firewall. O comando mostrará até 80 bytes do cabeçalho TCP e a parte de
+dados (assumindo que nenhuma opção IP está sendo usada).</p>
+<p><strong>ipso[admin]# fw monitor -e '[9:1]=6, accept;' -l 100 -m iO -x
+20</strong></p>
+<p>O exemplo a seguir mostrará todos os pacotes TCP entrando e saindo do
+Firewall na direção de entrada (Ex. antes de o sistema operacional
+rotear o pacote).</p>
+<p><strong>ipso[admin]# fw monitor -e 'accept;' -m iI</strong></p>
+<p>O exemplo a seguir mostrará todos os pacotes na interface com ID 0
+vindo, ou indo para 10.0.0.1. O valor usado de ifid corresponde</p>
+<p>ao número dado para uma interface pelo firewall. Você pode determinar
+qual interface tem qual número usindo o comando:<br />
+fw ctl iflist</p>
+<p><strong>ipso[admin]# fw monitor -e 'accept ifid=0,src=10.0.0.1 or
+dst=10.0.0.1;'</strong></p>
+<p>O exemplo a seguir faz a mesma coisa que o comando acima com a exceção
+de olhar apenas pacotes IP Protocolo 47.</p>
+<p><strong>ipso[admin]# fw monitor -e 'accept ifid=0,src=10.0.0.1 or
+dst=10.0.0.1,ip_p=47;'</strong></p>
+<p>O exemplo a seguir mostrará todos os pacotes tcp indo para ou vindo de
+10.0.0.1 com a porta 80 sendo tanto na origem quanto no destino.</p>
+<p><strong>ipso[admin]# fw monitor -e 'accept PROTO_tcp,dport=80 or
+sport=80,src=10.0.0.1 or dst=10.0.0.1;'</strong></p>
+<p>Outros exemplos comuns</p>
+<p><strong>ipso[admin]# fw monitor –e „accept (src=x.x.x.x or dst=x.x.x.x);“</strong></p>
+<p><strong>ipso[admin]# fw monitor –e „accept (src=x.x.x.x, dst=y.y.y.y);“</strong></p>
+<p><strong>ipso[admin]# fw monitor –e „accept ((src=x.x.x.x, dst=y.y.y.y) or
+(src=y.y.y.y, dst=x.x.x.x));“</strong></p>
+<p>Cuidados:</p>
+<p>Não modifique tabelas utilizadas em uma política, comportamento não
+esperado poderá ocorrer (incluindo crash do sistema).</p>
+<p>Pacotes são desfragmentados quando saem do Firewall tanto em entrada e
+saída.</p>
+<p>Qualquer ação que carregue, descarregue ou instale uma política vai
+fazer com que o fw monitor pare.</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'parededefogo';
+        var disqus_identifier = '2011/11/11/guia-de-referencia-fw-monitor/';
+        var disqus_url = 'http://parededefogo.com.br/2011/11/11/guia-de-referencia-fw-monitor/';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//parededefogo.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/tdmsilvino">@tdmsilvino</a></li>
+                            <li><a href="https://twitter.com/almeida_t">@almeida_t</a></li>
+                            <li><a href="https://br.linkedin.com/in/tdmsilvino">LinkedIn</a></li>
+                            <li><a href="https://ie.linkedin.com/in/tiagodealmeida">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'parededefogo';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

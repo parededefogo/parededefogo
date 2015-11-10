@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Parede de Fogo</title><link href="http://parededefogo.com.br/" rel="alternate"></link><link href="http://parededefogo.com.br/feeds/uncategorized.atom.xml" rel="self"></link><id>http://parededefogo.com.br/</id><updated>2014-09-10T13:27:00-03:00</updated><entry><title>ICMP Error packets are not translated according to NAT rulebase</title><link href="http://parededefogo.com.br/2014/09/10/icmp-error-packets-are-not-translated-according-to-nat-rulebase/" rel="alternate"></link><updated>2014-09-10T13:27:00-03:00</updated><author><name>talmeida</name></author><id>tag:parededefogo.com.br,2014-09-10:2014/09/10/icmp-error-packets-are-not-translated-according-to-nat-rulebase/</id><summary type="html">&lt;p&gt;+--------------------------------------------------------------------------+
+| Symptoms                                                                 |
++--------------------------------------------------------------------------+
+| -   ICMP Error packets (redirect, fragmentation needed, etc) are not     |
+|     translated according to the NAT rule base                            |
+| -   ICMP Error packets are partially translated (only the Destination    |
+|     address is changed correctly) when going through the FireWall        |
++--------------------------------------------------------------------------+
++--------------------------------------------------------------------------+
+| Cause                                                                    |
++--------------------------------------------------------------------------+
+| When it comes to the handling of ICMP error packets, in version &lt;strong&gt;R65&lt;/strong&gt;  |
+| and below, the NAT rule base was inherited from the internal packet.     |
+| &lt;/p&gt;                                                                     |
+| This means that the same NAT decisions would have been taken for the     |
+| internal packet and the ICMP IP header, and there was no way to          |
+| configure explicit rules for the ICMP Error IP header itself.            |
+|                                                                          |
+| &lt;p&gt;                                                                      |
+| Starting in version &lt;strong&gt;R70&lt;/strong&gt;, by default, it is possible to configure     |
+| explicit NAT rules for ICMP Error packets. However, for routing          |
+| decisions, an ICMP Error packet will go over the NAT rule base in the    |
+| Outbound Chain and only after the Destination address has                |
+| been translated according to the internal packet NAT rule base.          |
++--------------------------------------------------------------------------+
++--------------------------------------------------------------------------+
+| Solution                                                                 |
++--------------------------------------------------------------------------+
+| There are two possible solutions:                                        |
+| &lt;/p&gt;                                                                     |
+| 1) If explicit NAT for ICMP Error packets is not required, it is        |
+| possible to revert the new feature by enabling the following kernel      |
+| parameter on-the-fly:                                                    |
+|                                                                          |
+| &lt;strong&gt;[Expert@HostName]# fw ctl set int fwx_old_icmp_nat 1&lt;/strong&gt;           |
+|                                                                          |
+| To ser this parameter permanently, refer to                              |
+| &lt;a href="https://supportcenter.checkpoint.com/supportcenter/portal?js_p |
+| eid=P-114a7bc3b09-10006&amp;amp;eventSubmit_doGoviewsolutiondetails&amp;amp;solutionid=s |
+| k26202"&gt;sk26202&lt;/a&gt;                                                                  |
+| or look How to Set Module Variables in IPSO 6.2 in the document below.   |
+|                                                                          |
+| &lt;p&gt;                                                                      |
+| 2) If explicit NAT is required, then the NAT rule base should match the |
+| packet after its destination has been translated                         |
++--------------------------------------------------------------------------+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt; &lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;How to Set Module Variables in IPSO 6.2&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Establish a command line connection to the IPSO appliance.&lt;/p&gt;
+&lt;p&gt;1 - At the IPSO shell prompt, enter the command:&lt;br /&gt;
+&lt;em&gt;dbset advanced:loader t&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;2 - Open Voyager (or exit Voyager and run it again if Voyager was open
+when you entered the previous command).&lt;/p&gt;
+&lt;p&gt;3 - Click Configuration → Tools → Firewall Kernel Tuning in the
+navigation tree.&lt;/p&gt;
+&lt;p&gt;4 - Edit the appropriate variable value exactly as it shown in the
+attached image:&lt;/p&gt;
+&lt;p&gt;5 - Hit “Save Config” button.&lt;/p&gt;
+&lt;p&gt;6 - Reboot and check if the parameter is active with the command below:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[Expert@HostName]# fw ctl get int fwx_old_icmp_nat&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Your output should be: “fwx_old_icmp_nat = 1”&lt;/p&gt;
+&lt;p&gt;Fonte: usercenter.checkpoint.com&lt;/p&gt;</summary></entry></feed>

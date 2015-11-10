@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Parede de Fogo - vsx</title>
+        <link rel="stylesheet" href="http://parededefogo.com.br/theme/css/main.css" />
+        <link href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Parede de Fogo Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://parededefogo.com.br/">Parede de Fogo  <strong>O ponto de encontro dos profissionais de segurança da informação</strong></a></h1>
+                <nav><ul>
+                    <li><a href="http://parededefogo.com.br/pages/man-tcpdump/">man tcpdump</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://parededefogo.com.br/2012/03/01/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/">Listando qual VLAN está em qual contexto de um firewall VSX</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2012-03-01T15:02:00-03:00">
+                Published: Thu 01 March 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/context/">context</a> <a href="http://parededefogo.com.br/tag/vsx/">vsx</a> </p>
+</footer><!-- /.post-info --><p>Em um firewall ASA com multiplos contextos você pode achar qual VLAN
+está associada com qual contexto com esses comandos:<br />
+changeto system<br />
+show context (esse comando mostrará a lista de contextos e as VLANs
+associadas a cada um deles)</p>
+<p>Como obter a mesma informação em um firewall VSX?</p>
+<p>Em um firewall VSX você pode usar o comando "cat /proc/net/vlan/config"
+para ver uma lista de todas as VLANs que estão configuradas no firewall.</p>
+<p>Agora, como saber qual VLAN está em qual contexto? Se você tem muitos
+contextos essa pode ser uma tarefa trabalhosa.</p>
+<p>Para resolver essa questão fizemos um shell script que mostra qual VLAN
+está em qual contexto de firewall.</p>
+<p>Basta executar o script abaixo:</p>
+<p>for x in `fw vsx stat -v | tr -d " " | grep \^[0-9] | cut -d '|' -f
+1`; do<br />
+echo "context # \$x" &gt;&gt; contexts.txt;<br />
+fw getifs -vs \$x &gt;&gt; contexts.txt;<br />
+done</p>
+<p>Depois é só ver o resultado listando o conteúdo do arquivo contexts.txt:
+"cat contexts.txt"</p>
+<p>O conteúdo do arquivo deve ser parecido com esse:</p>
+<p>context # 1<br />
+localhost eth0.700 4.4.6.101 255.255.0.0<br />
+localhost eth0.701 4.4.5.101 255.255.0.0<br />
+localhost eth1.702 2.2.2.1 255.255.254.0<br />
+localhost eth1.703 3.3.3.1 255.255.254.0</p>
+<p>Nesse caso nós temos as VLANs 700 e 701 na interface eth0 do contexto 1
+e as VLANs 702 e 703 na interface eth1 do contexto 1.</p><p>There are <a href="http://parededefogo.com.br/2012/03/01/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/tdmsilvino">@tdmsilvino</a></li>
+                            <li><a href="https://twitter.com/almeida_t">@almeida_t</a></li>
+                            <li><a href="https://br.linkedin.com/in/tdmsilvino">LinkedIn</a></li>
+                            <li><a href="https://ie.linkedin.com/in/tiagodealmeida">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'parededefogo';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

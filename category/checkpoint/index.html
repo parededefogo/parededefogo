@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Parede de Fogo - checkpoint</title>
+        <link rel="stylesheet" href="http://parededefogo.com.br/theme/css/main.css" />
+        <link href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Parede de Fogo Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://parededefogo.com.br/">Parede de Fogo  <strong>O ponto de encontro dos profissionais de segurança da informação</strong></a></h1>
+                <nav><ul>
+                    <li><a href="http://parededefogo.com.br/pages/man-tcpdump/">man tcpdump</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://parededefogo.com.br/2015/02/26/using-the-tcpdump-utility-on-ipso-os-to-troubleshoot-network-problems/">Using the 'tcpdump' utility on IPSO OS to troubleshoot network problems</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-02-26T11:13:00-03:00">
+                Published: Thu 26 February 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/talmeida/">talmeida</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/cdp/">cdp</a> <a href="http://parededefogo.com.br/tag/checkpoint/">checkpoint</a> <a href="http://parededefogo.com.br/tag/tcpdump/">tcpdump</a> </p>
+</footer><!-- /.post-info --><p>I found today a very useful article. It's worth a try!</p>
+<p>http://www.kehlet.cx/articles/186.html</p>
+<p><code>tcpdump</code> command will sniff for Cisco switches' <a href="http://en.wikipedia.org/wiki/Cisco_Discovery_Protocol">Cisco Discovery
+Protocol (CDP)</a>
+packets. It's useful to add to your regular arsenal of pings and
+traceroutes if you're working on a system on a foreign network of which
+you were given little to no information. Oh, this assumes you have root
+access of course. Change <code>eth0</code> of course to match the network
+interface(s) you want to examine.<br />
+<code>tcpdump -nn -v -i eth0 -s 1500 -c 1 'ether[20:2] == 0x2000'</code></p>
+<p>CDP packets offer some additional insight to the network you're on:</p>
+<blockquote>
+<p>The information contained in CThis DP announcements varies by the type
+of device and the version of the operating system running on it.
+Information contained includes the operating system version, hostname,
+every address for every protocol configured on the port where CDP
+frame is sent eg. IP address, the port identifier from which the
+announcement was sent, device type and model, duplex setting, VTP
+domain, native VLAN, power draw (for Power over Ethernet devices), and
+other device specific information.</p>
+</blockquote>
+<p>You <code>tcpdump</code> output might look something like (IP address XX'd out):</p>
+<div class="highlight"><pre><span class="mi">14</span><span class="o">:</span><span class="mi">42</span><span class="o">:</span><span class="mf">57.087609</span> <span class="n">CDPv2</span><span class="o">,</span> <span class="n">ttl</span><span class="o">:</span> <span class="mi">180</span><span class="n">s</span><span class="o">,</span> <span class="n">checksum</span><span class="o">:</span> <span class="mi">692</span> <span class="o">(</span><span class="n">unverified</span><span class="o">),</span> <span class="n">length</span> <span class="mi">358</span>
+      <span class="n">Device</span><span class="o">-</span><span class="n">ID</span> <span class="o">(</span><span class="mh">0x01</span><span class="o">),</span> <span class="n">length</span><span class="o">:</span> <span class="mi">11</span> <span class="n">bytes</span><span class="o">:</span> <span class="s1">&#39;Public_DMZ&#39;</span>
+      <span class="n">Address</span> <span class="o">(</span><span class="mh">0x02</span><span class="o">),</span> <span class="n">length</span><span class="o">:</span> <span class="mi">13</span> <span class="n">bytes</span><span class="o">:</span> <span class="n">IPv4</span> <span class="o">(</span><span class="mi">1</span><span class="o">)</span> <span class="n">XXX</span><span class="o">.</span><span class="na">XXX</span><span class="o">.</span><span class="na">XX</span><span class="o">.</span><span class="na">X</span>
+      <span class="n">Port</span><span class="o">-</span><span class="n">ID</span> <span class="o">(</span><span class="mh">0x03</span><span class="o">),</span> <span class="n">length</span><span class="o">:</span> <span class="mi">16</span> <span class="n">bytes</span><span class="o">:</span> <span class="s1">&#39;FastEthernet0/21&#39;</span>
+      <span class="n">Capability</span> <span class="o">(</span><span class="mh">0x04</span><span class="o">),</span> <span class="n">length</span><span class="o">:</span> <span class="mi">4</span> <span class="n">bytes</span><span class="o">:</span> <span class="o">(</span><span class="mh">0x00000028</span><span class="o">):</span> <span class="n">L2</span> <span class="n">Switch</span><span class="o">,</span>
+<span class="n">IGMP</span> <span class="n">snooping</span>
+      <span class="n">Version</span> <span class="n">String</span> <span class="o">(</span><span class="mh">0x05</span><span class="o">),</span> <span class="n">length</span><span class="o">:</span> <span class="mi">220</span> <span class="n">bytes</span><span class="o">:</span>
+        <span class="n">Cisco</span> <span class="n">Internetwork</span> <span class="n">Operating</span> <span class="n">System</span> <span class="n">Software</span>
+        <span class="n">IOS</span> <span class="o">(</span><span class="n">tm</span><span class="o">)</span> <span class="n">C2950</span> <span class="n">Software</span> <span class="o">(</span><span class="n">C2950</span><span class="o">-</span><span class="n">I6Q4L2</span><span class="o">-</span><span class="n">M</span><span class="o">),</span> <span class="n">Version</span> <span class="mf">12.1</span><span class="o">(</span><span class="mi">12</span><span class="n">c</span><span class="o">)</span><span class="n">EA1</span><span class="o">,</span>
+<span class="n">RELEASE</span> <span class="n">SOFTWARE</span> <span class="o">(</span><span class="n">fc1</span><span class="o">)</span>
+        <span class="n">Copyright</span> <span class="o">(</span><span class="n">c</span><span class="o">)</span> <span class="mi">1986</span><span class="o">-</span><span class="mi">2002</span> <span class="n">by</span> <span class="n">cisco</span> <span class="n">Systems</span><span class="o">,</span> <span class="n">Inc</span><span class="o">.</span>
+        <span class="n">Compiled</span> <span class="n">Sun</span> <span class="mi">24</span><span class="o">-</span><span class="n">Nov</span><span class="o">-</span><span class="mi">02</span> <span class="mi">23</span><span class="o">:</span><span class="mi">31</span> <span class="n">by</span> <span class="n">antonino</span>
+      <span class="n">Platform</span> <span class="o">(</span><span class="mh">0x06</span><span class="o">),</span> <span class="n">length</span><span class="o">:</span> <span class="mi">21</span> <span class="n">bytes</span><span class="o">:</span> <span class="s1">&#39;cisco WS-C2950G-24-EI&#39;</span>
+      <span class="n">Protocol</span><span class="o">-</span><span class="n">Hello</span> <span class="n">option</span> <span class="o">(</span><span class="mh">0x08</span><span class="o">),</span> <span class="n">length</span><span class="o">:</span> <span class="mi">32</span> <span class="n">bytes</span><span class="o">:</span>
+      <span class="n">VTP</span> <span class="n">Management</span> <span class="n">Domain</span> <span class="o">(</span><span class="mh">0x09</span><span class="o">),</span> <span class="n">length</span><span class="o">:</span> <span class="mi">0</span> <span class="n">byte</span><span class="o">:</span> <span class="s1">&#39;&#39;</span>
+<span class="mi">1</span> <span class="n">packets</span> <span class="n">captured</span>
+<span class="mi">2</span> <span class="n">packets</span> <span class="n">received</span> <span class="n">by</span> <span class="n">filter</span>
+<span class="mi">0</span> <span class="n">packets</span> <span class="n">dropped</span> <span class="n">by</span> <span class="n">kernel</span>
+</pre></div><p>There are <a href="http://parededefogo.com.br/2015/02/26/using-the-tcpdump-utility-on-ipso-os-to-troubleshoot-network-problems/#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://parededefogo.com.br/2012/04/04/como-habilitar-scp-no-splat-secureplatform/" rel="bookmark"
+                           title="Permalink to Como habilitar SCP no SPLAT (SecurePlatform)">Como habilitar SCP no SPLAT (SecurePlatform)</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-04-04T15:45:00-03:00">
+                Published: Wed 04 April 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/talmeida/">talmeida</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/splat/">splat</a> </p>
+</footer><!-- /.post-info -->                <p>Quem um dia precisou fazer uma cópia usando o scp de um servidor SPLAT e
+se deu conta que não era possível?</p>
+<p>Bom nesse artigo vou mostrar 2 passos para habilitar copia de arquivos
+via SCP no SPLAT:</p>
+<p>1 - Abra o arquivo /etc/passwd e modifique a linha em negrito ...</p>
+                <a class="readmore" href="http://parededefogo.com.br/2012/04/04/como-habilitar-scp-no-splat-secureplatform/">read more</a>
+<p>There are <a href="http://parededefogo.com.br/2012/04/04/como-habilitar-scp-no-splat-secureplatform/#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://parededefogo.com.br/2012/03/01/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/" rel="bookmark"
+                           title="Permalink to Listando qual VLAN está em qual contexto de um firewall VSX">Listando qual VLAN está em qual contexto de um firewall VSX</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-03-01T15:02:00-03:00">
+                Published: Thu 01 March 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/context/">context</a> <a href="http://parededefogo.com.br/tag/vsx/">vsx</a> </p>
+</footer><!-- /.post-info -->                <p>Em um firewall ASA com multiplos contextos você pode achar qual VLAN
+está associada com qual contexto com esses comandos:<br />
+changeto system<br />
+show context (esse comando mostrará a lista de contextos e as VLANs
+associadas a cada um deles)</p>
+<p>Como obter a mesma informação em um firewall VSX?</p>
+<p>Em um ...</p>
+                <a class="readmore" href="http://parededefogo.com.br/2012/03/01/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/">read more</a>
+<p>There are <a href="http://parededefogo.com.br/2012/03/01/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://parededefogo.com.br/2012/03/01/ntp-e-vrrp-no-ipso/" rel="bookmark"
+                           title="Permalink to NTP e VRRP no IPSO">NTP e VRRP no IPSO</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-03-01T12:02:00-03:00">
+                Published: Thu 01 March 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/ipso-vrrp-ntp/">ipso vrrp ntp</a> </p>
+</footer><!-- /.post-info -->                <p>É recomendável usar NTP com VRRP ou IP Clustering?<br />
+Baseado nas soluções: sk40322 e sk41502<br />
+Aplicável à: IPSO</p>
+<p>* Muitas vezes é um requerido de um firewall em um ambiente de produção
+ter timestamps corretamente configurados com NTP.</p>
+<p>* Sincronização de horário é recomendado para soluções de cluster.</p>
+<p>Solução:</p>
+<p>Quedas frequentes do ...</p>
+                <a class="readmore" href="http://parededefogo.com.br/2012/03/01/ntp-e-vrrp-no-ipso/">read more</a>
+<p>There are <a href="http://parededefogo.com.br/2012/03/01/ntp-e-vrrp-no-ipso/#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://parededefogo.com.br/2011/12/05/como-evitar-o-ipsweb-intelligence-para-hosts-especificos/" rel="bookmark"
+                           title="Permalink to Como evitar o IPS/Web Intelligence para hosts específicos">Como evitar o IPS/Web Intelligence para hosts específicos</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-12-05T10:19:00-02:00">
+                Published: Mon 05 December 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/ips/">ips</a> <a href="http://parededefogo.com.br/tag/smartdefense/">smartdefense</a> </p>
+</footer><!-- /.post-info -->                <p>Baseado na solução:  sk31918<br />
+Aplicável à:   R70, NGX R65, R71, R75</p>
+<p>Sintomas</p>
+<p>Mensagem de erro "Invalid lf-cr combination in the http header" no
+SmartView Tracker.<br />
+Tráfego para a porta 80 é bloqueado com a mensagem de erro mostrada
+acima quando o Worm Catcher está habilitado.<br />
+Esse erro aparece para tráfego ...</p>
+                <a class="readmore" href="http://parededefogo.com.br/2011/12/05/como-evitar-o-ipsweb-intelligence-para-hosts-especificos/">read more</a>
+<p>There are <a href="http://parededefogo.com.br/2011/12/05/como-evitar-o-ipsweb-intelligence-para-hosts-especificos/#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+    Page 1 / 3
+        <a href="http://parededefogo.com.br/category/checkpoint/page/2/">&raquo;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/tdmsilvino">@tdmsilvino</a></li>
+                            <li><a href="https://twitter.com/almeida_t">@almeida_t</a></li>
+                            <li><a href="https://br.linkedin.com/in/tdmsilvino">LinkedIn</a></li>
+                            <li><a href="https://ie.linkedin.com/in/tiagodealmeida">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'parededefogo';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Parede de Fogo - Uncategorized</title>
+        <link rel="stylesheet" href="http://parededefogo.com.br/theme/css/main.css" />
+        <link href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Parede de Fogo Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://parededefogo.com.br/">Parede de Fogo  <strong>O ponto de encontro dos profissionais de segurança da informação</strong></a></h1>
+                <nav><ul>
+                    <li><a href="http://parededefogo.com.br/pages/man-tcpdump/">man tcpdump</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://parededefogo.com.br/2014/09/10/icmp-error-packets-are-not-translated-according-to-nat-rulebase/">ICMP Error packets are not translated according to NAT rulebase</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2014-09-10T13:27:00-03:00">
+                Published: Wed 10 September 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/talmeida/">talmeida</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/uncategorized/">Uncategorized</a>.</p>
+
+</footer><!-- /.post-info --><p>+--------------------------------------------------------------------------+
+| Symptoms                                                                 |
++--------------------------------------------------------------------------+
+| -   ICMP Error packets (redirect, fragmentation needed, etc) are not     |
+|     translated according to the NAT rule base                            |
+| -   ICMP Error packets are partially translated (only the Destination    |
+|     address is changed correctly) when going through the FireWall        |
++--------------------------------------------------------------------------+
++--------------------------------------------------------------------------+
+| Cause                                                                    |
++--------------------------------------------------------------------------+
+| When it comes to the handling of ICMP error packets, in version <strong>R65</strong>  |
+| and below, the NAT rule base was inherited from the internal packet.     |
+| </p>                                                                     |
+| This means that the same NAT decisions would have been taken for the     |
+| internal packet and the ICMP IP header, and there was no way to          |
+| configure explicit rules for the ICMP Error IP header itself.            |
+|                                                                          |
+| <p>                                                                      |
+| Starting in version <strong>R70</strong>, by default, it is possible to configure     |
+| explicit NAT rules for ICMP Error packets. However, for routing          |
+| decisions, an ICMP Error packet will go over the NAT rule base in the    |
+| Outbound Chain and only after the Destination address has                |
+| been translated according to the internal packet NAT rule base.          |
++--------------------------------------------------------------------------+
++--------------------------------------------------------------------------+
+| Solution                                                                 |
++--------------------------------------------------------------------------+
+| There are two possible solutions:                                        |
+| </p>                                                                     |
+| 1) If explicit NAT for ICMP Error packets is not required, it is        |
+| possible to revert the new feature by enabling the following kernel      |
+| parameter on-the-fly:                                                    |
+|                                                                          |
+| <strong>[Expert@HostName]# fw ctl set int fwx_old_icmp_nat 1</strong>           |
+|                                                                          |
+| To ser this parameter permanently, refer to                              |
+| <a href="https://supportcenter.checkpoint.com/supportcenter/portal?js_p |
+| eid=P-114a7bc3b09-10006&amp;eventSubmit_doGoviewsolutiondetails&amp;solutionid=s |
+| k26202">sk26202</a>                                                                  |
+| or look How to Set Module Variables in IPSO 6.2 in the document below.   |
+|                                                                          |
+| <p>                                                                      |
+| 2) If explicit NAT is required, then the NAT rule base should match the |
+| packet after its destination has been translated                         |
++--------------------------------------------------------------------------+</p>
+<p><strong> </strong></p>
+<p><strong>How to Set Module Variables in IPSO 6.2</strong></p>
+<p>Establish a command line connection to the IPSO appliance.</p>
+<p>1 - At the IPSO shell prompt, enter the command:<br />
+<em>dbset advanced:loader t</em></p>
+<p>2 - Open Voyager (or exit Voyager and run it again if Voyager was open
+when you entered the previous command).</p>
+<p>3 - Click Configuration → Tools → Firewall Kernel Tuning in the
+navigation tree.</p>
+<p>4 - Edit the appropriate variable value exactly as it shown in the
+attached image:</p>
+<p>5 - Hit “Save Config” button.</p>
+<p>6 - Reboot and check if the parameter is active with the command below:</p>
+<p><strong>[Expert@HostName]# fw ctl get int fwx_old_icmp_nat</strong></p>
+<p>Your output should be: “fwx_old_icmp_nat = 1”</p>
+<p>Fonte: usercenter.checkpoint.com</p><p>There are <a href="http://parededefogo.com.br/2014/09/10/icmp-error-packets-are-not-translated-according-to-nat-rulebase/#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/tdmsilvino">@tdmsilvino</a></li>
+                            <li><a href="https://twitter.com/almeida_t">@almeida_t</a></li>
+                            <li><a href="https://br.linkedin.com/in/tdmsilvino">LinkedIn</a></li>
+                            <li><a href="https://ie.linkedin.com/in/tiagodealmeida">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'parededefogo';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

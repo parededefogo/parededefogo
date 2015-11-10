@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Como migrar a tabela de roteamento de um firewall SPLAT ou Linux com iproute2</title>
+        <link rel="stylesheet" href="http://parededefogo.com.br/theme/css/main.css" />
+        <link href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Parede de Fogo Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://parededefogo.com.br/">Parede de Fogo  <strong>O ponto de encontro dos profissionais de segurança da informação</strong></a></h1>
+                <nav><ul>
+                    <li><a href="http://parededefogo.com.br/pages/man-tcpdump/">man tcpdump</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://parededefogo.com.br/2011/11/18/como-migrar-a-tabela-de-roteamento-de-um-firewall-splat-ou-linux-com-iproute2/" rel="bookmark"
+           title="Permalink to Como migrar a tabela de roteamento de um firewall SPLAT ou Linux com iproute2">Como migrar a tabela de roteamento de um firewall SPLAT ou Linux com iproute2</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-11-18T14:46:00-02:00">
+                Published: Fri 18 November 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/splat/">splat</a> </p>
+</footer><!-- /.post-info -->      <p>No sistema antigo siga os seguintes passos:</p>
+<p>Execute o comando: ip route show | grep via</p>
+<p>Copie a saída do comando para um arquivo ou redirecione-a para um
+arquivo adicionando "&gt; rotas.txt" ao comando anterior</p>
+<p>Revise a lista e verifique se ela contem todas as rotas que você
+precisa. Caso haja rotas desnecessárias você pode deletá-las removendo a
+linha inteira.</p>
+<p>Adicione "ip route add" no começo de cada linha usando um editor de
+texto da sua escolha ou usando esse comando a seguir:<br />
+cat rotas.txt |awk '{ print "ip route add "\$0 ; }' &gt;
+rotas_para_importar</p>
+<p>As linhas no arquivo rotas_para_importar devem se parecer com essas:<br />
+ip route add 10.1.1.1 via 192.168.10.1 dev eth0<br />
+ip route add default via 192.168.10.102 dev eth0</p>
+<p>Execute o arquivo (sh rotas_para_importar) no sistema de destino. As
+rotas serão adicionadas à tabela de roteamento.</p>
+<p>Para fazer as rotas sobreviverem a um reboot use esses comandos no
+SPLAT:</p>
+<p>save_route --save ou cpnetconf store</p>
+<p>Em um sistema Linux comum você deve executar o arquivo
+rotas_para_importar no final da inicialização do sistema. Por exemplo
+no Slackware você deve adicionar essa linha
+“/caminho/para/rotas_para_importar” no arquivo /etc/rc.d/rc.local, já
+no Ubuntu essa linha pode ser adicionada em /etc/rc.local. Esse arquivo
+varia em cada distribuição.</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'parededefogo';
+        var disqus_identifier = '2011/11/18/como-migrar-a-tabela-de-roteamento-de-um-firewall-splat-ou-linux-com-iproute2/';
+        var disqus_url = 'http://parededefogo.com.br/2011/11/18/como-migrar-a-tabela-de-roteamento-de-um-firewall-splat-ou-linux-com-iproute2/';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//parededefogo.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/tdmsilvino">@tdmsilvino</a></li>
+                            <li><a href="https://twitter.com/almeida_t">@almeida_t</a></li>
+                            <li><a href="https://br.linkedin.com/in/tdmsilvino">LinkedIn</a></li>
+                            <li><a href="https://ie.linkedin.com/in/tiagodealmeida">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'parededefogo';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

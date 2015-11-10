@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Parede de Fogo - debug</title>
+        <link rel="stylesheet" href="http://parededefogo.com.br/theme/css/main.css" />
+        <link href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Parede de Fogo Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://parededefogo.com.br/">Parede de Fogo  <strong>O ponto de encontro dos profissionais de segurança da informação</strong></a></h1>
+                <nav><ul>
+                    <li><a href="http://parededefogo.com.br/pages/man-tcpdump/">man tcpdump</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://parededefogo.com.br/2011/10/18/qual-e-a-diferenca-entre-debug-kdebug-e-zdebug/">Qual é a diferença entre debug, kdebug e zdebug?</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2011-10-18T22:40:00-02:00">
+                Published: Tue 18 October 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/debug/">debug</a> </p>
+</footer><!-- /.post-info --><p>O comando <strong>fw ctl</strong> pode ser usado para depurar vários aspectos de um
+firewall CheckPoint.</p>
+<p>O propósito desse documento é explicar o uso dos comandos fw ctl
+<strong>debug</strong>, <strong>kdebug</strong> e <strong>zdebug</strong> e suas diferenças.</p>
+<p>O comando fw ctl <strong>debug</strong> pode ser usado para enviar mensages de
+depuração para o console. O exemplo a seguir mostra como depurar os
+pacotes que foram descartados, caso você não saiba exatamente qual foi o
+motivo:</p>
+<p>fw ctl debug 0<br />
+Zera as opções de depuração. É recomendado usar antes dos comandos
+abaixo.<br />
+<!--more-->fw ctl debug –f <em>buffer</em><br />
+Define o tamanho do buffer. Pode variar de 1024kb à 32768kb.</p>
+<p>fw ctl debug –m fw drop<br />
+Usa a opção <strong>drop</strong> para o módulo <strong>fw</strong> para mostrar todos os pacotes
+que foram descartados.</p>
+<p>O comando <strong>fw ctl debug –x</strong> será usado para parar a depuração.</p>
+<p>Se você quer enviar as mensagens para outro lugar que não seja o
+console, você pode criar um buffer de depuração e usar o <strong>kdebug</strong> para
+lê-lo. Para habilitar esse buffer use o comando <strong>fw ctl debug –buf.</strong> A
+partir daí você pode usar o <strong>kdebug</strong> para ler as mensagens do buffer.
+Assim que você executar o comando <strong>fw ctl kdebug</strong>, ele limpará o
+buffer de depuração, permitindo que mais mensagens sejam vistas.</p>
+<p>Para colocar as mensagens do buffer em um arquivo, use o comando <strong>fw
+ctl kdebug –f &gt; output-file.txt.</strong></p>
+<p>O comando fw ctl <strong>zdebug</strong> pode ser usado como uma forma simplificada.
+Ele é basicamente um atalho para o módulo <strong>fw</strong> e um buffer
+pré-configurado de <strong>1024kb</strong>. Esse comando é recomendado quando não é
+necessário ver muitos pacotes para descobrir a razão do problema. Se
+você precisar que a sessão de depuração seja executada por mais tempo
+use kdebug. Veja abaixo um exemplo do zdebug que faz a mesma coisa que o
+kdebug do exemplo anterior:</p>
+<p>f<strong>w ctl zdebug drop &gt; output.txt</strong></p><p>There are <a href="http://parededefogo.com.br/2011/10/18/qual-e-a-diferenca-entre-debug-kdebug-e-zdebug/#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/tdmsilvino">@tdmsilvino</a></li>
+                            <li><a href="https://twitter.com/almeida_t">@almeida_t</a></li>
+                            <li><a href="https://br.linkedin.com/in/tdmsilvino">LinkedIn</a></li>
+                            <li><a href="https://ie.linkedin.com/in/tiagodealmeida">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'parededefogo';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

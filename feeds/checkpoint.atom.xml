@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Parede de Fogo</title><link href="http://parededefogo.com.br/" rel="alternate"></link><link href="http://parededefogo.com.br/feeds/checkpoint.atom.xml" rel="self"></link><id>http://parededefogo.com.br/</id><updated>2015-02-26T11:13:00-03:00</updated><entry><title>Using the 'tcpdump' utility on IPSO OS to troubleshoot network problems</title><link href="http://parededefogo.com.br/2015/02/26/using-the-tcpdump-utility-on-ipso-os-to-troubleshoot-network-problems/" rel="alternate"></link><updated>2015-02-26T11:13:00-03:00</updated><author><name>talmeida</name></author><id>tag:parededefogo.com.br,2015-02-26:2015/02/26/using-the-tcpdump-utility-on-ipso-os-to-troubleshoot-network-problems/</id><summary type="html">&lt;p&gt;I found today a very useful article. It's worth a try!&lt;/p&gt;
+&lt;p&gt;http://www.kehlet.cx/articles/186.html&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;tcpdump&lt;/code&gt; command will sniff for Cisco switches' &lt;a href="http://en.wikipedia.org/wiki/Cisco_Discovery_Protocol"&gt;Cisco Discovery
+Protocol (CDP)&lt;/a&gt;
+packets. It's useful to add to your regular arsenal of pings and
+traceroutes if you're working on a system on a foreign network of which
+you were given little to no information. Oh, this assumes you have root
+access of course. Change &lt;code&gt;eth0&lt;/code&gt; of course to match the network
+interface(s) you want to examine.&lt;br /&gt;
+&lt;code&gt;tcpdump -nn -v -i eth0 -s 1500 -c 1 'ether[20:2] == 0x2000'&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;CDP packets offer some additional insight to the network you're on:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The information contained in CThis DP announcements varies by the type
+of device and the version of the operating system running on it.
+Information contained includes the operating system version, hostname,
+every address for every protocol configured on the port where CDP
+frame is sent eg. IP address, the port identifier from which the
+announcement was sent, device type and model, duplex setting, VTP
+domain, native VLAN, power draw (for Power over Ethernet devices), and
+other device specific information.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;You &lt;code&gt;tcpdump&lt;/code&gt; output might look something like (IP address XX'd out):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="mi"&gt;14&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;42&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mf"&gt;57.087609&lt;/span&gt; &lt;span class="n"&gt;CDPv2&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ttl&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;180&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;checksum&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;692&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;unverified&lt;/span&gt;&lt;span class="o"&gt;),&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="mi"&gt;358&lt;/span&gt;
+      &lt;span class="n"&gt;Device&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ID&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;0x01&lt;/span&gt;&lt;span class="o"&gt;),&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;11&lt;/span&gt; &lt;span class="n"&gt;bytes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Public_DMZ&amp;#39;&lt;/span&gt;
+      &lt;span class="n"&gt;Address&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;0x02&lt;/span&gt;&lt;span class="o"&gt;),&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;13&lt;/span&gt; &lt;span class="n"&gt;bytes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;IPv4&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;XXX&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;XXX&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;XX&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;X&lt;/span&gt;
+      &lt;span class="n"&gt;Port&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ID&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;0x03&lt;/span&gt;&lt;span class="o"&gt;),&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="n"&gt;bytes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;FastEthernet0/21&amp;#39;&lt;/span&gt;
+      &lt;span class="n"&gt;Capability&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;0x04&lt;/span&gt;&lt;span class="o"&gt;),&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt; &lt;span class="n"&gt;bytes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;0x00000028&lt;/span&gt;&lt;span class="o"&gt;):&lt;/span&gt; &lt;span class="n"&gt;L2&lt;/span&gt; &lt;span class="n"&gt;Switch&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;
+&lt;span class="n"&gt;IGMP&lt;/span&gt; &lt;span class="n"&gt;snooping&lt;/span&gt;
+      &lt;span class="n"&gt;Version&lt;/span&gt; &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;0x05&lt;/span&gt;&lt;span class="o"&gt;),&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;220&lt;/span&gt; &lt;span class="n"&gt;bytes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;Cisco&lt;/span&gt; &lt;span class="n"&gt;Internetwork&lt;/span&gt; &lt;span class="n"&gt;Operating&lt;/span&gt; &lt;span class="n"&gt;System&lt;/span&gt; &lt;span class="n"&gt;Software&lt;/span&gt;
+        &lt;span class="n"&gt;IOS&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tm&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;C2950&lt;/span&gt; &lt;span class="n"&gt;Software&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;C2950&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;I6Q4L2&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;M&lt;/span&gt;&lt;span class="o"&gt;),&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt; &lt;span class="mf"&gt;12.1&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="n"&gt;EA1&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;
+&lt;span class="n"&gt;RELEASE&lt;/span&gt; &lt;span class="n"&gt;SOFTWARE&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fc1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;Copyright&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="mi"&gt;1986&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2002&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt; &lt;span class="n"&gt;cisco&lt;/span&gt; &lt;span class="n"&gt;Systems&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Inc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+        &lt;span class="n"&gt;Compiled&lt;/span&gt; &lt;span class="n"&gt;Sun&lt;/span&gt; &lt;span class="mi"&gt;24&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Nov&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;02&lt;/span&gt; &lt;span class="mi"&gt;23&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;31&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt; &lt;span class="n"&gt;antonino&lt;/span&gt;
+      &lt;span class="n"&gt;Platform&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;0x06&lt;/span&gt;&lt;span class="o"&gt;),&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;21&lt;/span&gt; &lt;span class="n"&gt;bytes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;cisco WS-C2950G-24-EI&amp;#39;&lt;/span&gt;
+      &lt;span class="n"&gt;Protocol&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Hello&lt;/span&gt; &lt;span class="n"&gt;option&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;0x08&lt;/span&gt;&lt;span class="o"&gt;),&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;32&lt;/span&gt; &lt;span class="n"&gt;bytes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+      &lt;span class="n"&gt;VTP&lt;/span&gt; &lt;span class="n"&gt;Management&lt;/span&gt; &lt;span class="n"&gt;Domain&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mh"&gt;0x09&lt;/span&gt;&lt;span class="o"&gt;),&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="n"&gt;byte&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;packets&lt;/span&gt; &lt;span class="n"&gt;captured&lt;/span&gt;
+&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="n"&gt;packets&lt;/span&gt; &lt;span class="n"&gt;received&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt; &lt;span class="n"&gt;filter&lt;/span&gt;
+&lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="n"&gt;packets&lt;/span&gt; &lt;span class="n"&gt;dropped&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt; &lt;span class="n"&gt;kernel&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="cdp"></category><category term="checkpoint"></category><category term="tcpdump"></category></entry><entry><title>Como habilitar SCP no SPLAT (SecurePlatform)</title><link href="http://parededefogo.com.br/2012/04/04/como-habilitar-scp-no-splat-secureplatform/" rel="alternate"></link><updated>2012-04-04T15:45:00-03:00</updated><author><name>talmeida</name></author><id>tag:parededefogo.com.br,2012-04-04:2012/04/04/como-habilitar-scp-no-splat-secureplatform/</id><summary type="html">&lt;p&gt;Quem um dia precisou fazer uma cópia usando o scp de um servidor SPLAT e
+se deu conta que não era possível?&lt;/p&gt;
+&lt;p&gt;Bom nesse artigo vou mostrar 2 passos para habilitar copia de arquivos
+via SCP no SPLAT:&lt;/p&gt;
+&lt;p&gt;1 - Abra o arquivo /etc/passwd e modifique a linha em negrito&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;[Expert@cpmodule]# vi /etc/passwd&lt;/dt&gt;
+&lt;dt&gt;&lt;strong&gt;admin:x:0:0::/home/admin:/bin/cpshell&lt;/strong&gt; -&amp;gt; modifique o shell&lt;/dt&gt;
+&lt;dt&gt;padrão por /bin/bash &lt;strong&gt;admin:x:0:0::/home/admin:/bin/bash&lt;/strong&gt;&lt;/dt&gt;
+&lt;dd&gt;x!&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;Salve o arquivo&lt;/p&gt;
+&lt;p&gt;2 - Crie o arquivo /etc/scpusers e adicione o usuário admin neste
+arquivo:&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;[Expert@cpmodule]# vi /etc/scpusers&lt;/dt&gt;
+&lt;dt&gt;admin&lt;/dt&gt;
+&lt;dd&gt;x!&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;Pronto, seu servidor SPLAT ja está pronto para receber conexões SCP.&lt;/p&gt;</summary><category term="splat"></category></entry><entry><title>Listando qual VLAN está em qual contexto de um firewall VSX</title><link href="http://parededefogo.com.br/2012/03/01/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/" rel="alternate"></link><updated>2012-03-01T15:02:00-03:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2012-03-01:2012/03/01/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/</id><summary type="html">&lt;p&gt;Em um firewall ASA com multiplos contextos você pode achar qual VLAN
+está associada com qual contexto com esses comandos:&lt;br /&gt;
+changeto system&lt;br /&gt;
+show context (esse comando mostrará a lista de contextos e as VLANs
+associadas a cada um deles)&lt;/p&gt;
+&lt;p&gt;Como obter a mesma informação em um firewall VSX?&lt;/p&gt;
+&lt;p&gt;Em um firewall VSX você pode usar o comando "cat /proc/net/vlan/config"
+para ver uma lista de todas as VLANs que estão configuradas no firewall.&lt;/p&gt;
+&lt;p&gt;Agora, como saber qual VLAN está em qual contexto? Se você tem muitos
+contextos essa pode ser uma tarefa trabalhosa.&lt;/p&gt;
+&lt;p&gt;Para resolver essa questão fizemos um shell script que mostra qual VLAN
+está em qual contexto de firewall.&lt;/p&gt;
+&lt;p&gt;Basta executar o script abaixo:&lt;/p&gt;
+&lt;p&gt;for x in `fw vsx stat -v | tr -d " " | grep \^[0-9] | cut -d '|' -f
+1`; do&lt;br /&gt;
+echo "context # \$x" &amp;gt;&amp;gt; contexts.txt;&lt;br /&gt;
+fw getifs -vs \$x &amp;gt;&amp;gt; contexts.txt;&lt;br /&gt;
+done&lt;/p&gt;
+&lt;p&gt;Depois é só ver o resultado listando o conteúdo do arquivo contexts.txt:
+"cat contexts.txt"&lt;/p&gt;
+&lt;p&gt;O conteúdo do arquivo deve ser parecido com esse:&lt;/p&gt;
+&lt;p&gt;context # 1&lt;br /&gt;
+localhost eth0.700 4.4.6.101 255.255.0.0&lt;br /&gt;
+localhost eth0.701 4.4.5.101 255.255.0.0&lt;br /&gt;
+localhost eth1.702 2.2.2.1 255.255.254.0&lt;br /&gt;
+localhost eth1.703 3.3.3.1 255.255.254.0&lt;/p&gt;
+&lt;p&gt;Nesse caso nós temos as VLANs 700 e 701 na interface eth0 do contexto 1
+e as VLANs 702 e 703 na interface eth1 do contexto 1.&lt;/p&gt;</summary><category term="context"></category><category term="vsx"></category></entry><entry><title>NTP e VRRP no IPSO</title><link href="http://parededefogo.com.br/2012/03/01/ntp-e-vrrp-no-ipso/" rel="alternate"></link><updated>2012-03-01T12:02:00-03:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2012-03-01:2012/03/01/ntp-e-vrrp-no-ipso/</id><summary type="html">&lt;p&gt;É recomendável usar NTP com VRRP ou IP Clustering?&lt;br /&gt;
+Baseado nas soluções: sk40322 e sk41502&lt;br /&gt;
+Aplicável à: IPSO&lt;/p&gt;
+&lt;p&gt;* Muitas vezes é um requerido de um firewall em um ambiente de produção
+ter timestamps corretamente configurados com NTP.&lt;/p&gt;
+&lt;p&gt;* Sincronização de horário é recomendado para soluções de cluster.&lt;/p&gt;
+&lt;p&gt;Solução:&lt;/p&gt;
+&lt;p&gt;Quedas frequentes do serviço xntpd podem ser associadas com transições
+de VRRP e problemas de IP Clustering.&lt;/p&gt;
+&lt;p&gt;Nesses casos é prudente desabilitar o uso do NTP como servidor ou
+cliente, e ao invés disso usar o Agendador de Tarefas "Job Scheduler"
+para executar ntpdate, numa base diária ou mais frequente. A causa mais
+comum de quedas do xntpd é a mudança de estado em interfaces como link
+up/down, buffers cheios etc. Não há desvantagem alguma em executar o
+ntpdate ao invés do ntp.&lt;/p&gt;
+&lt;p&gt;Como ajustar o intervalo de consuta no NTP&lt;/p&gt;
+&lt;p&gt;Na maioria das plataformas Unix você pode editar o arquivo ntp.conf e
+especificar os parametros minpoll/maxpoll. Um minpoll ou maxpoll de n
+significa que ele vai, no mínimo, consultar o servidor ntp a cada 2n
+segundos.&lt;/p&gt;
+&lt;p&gt;O IPSO não provê um mecanismo para controlar com qual frequência ele
+consultará o NTP. No entanto, você pode desabilitar o NTP e chamar o
+comando ntpdate periodicamente usando um cron job. Esse comando consulta
+um servidor NTP espedificado e atualiza o horário no sistema local.&lt;/p&gt;
+&lt;p&gt;Examplo:&lt;br /&gt;
+Se você desabilitar o NTP e quer atualizar o horário uma vez por dia
+com o servidor NTP 10.9.8.1 às 00:15, siga esses passos:&lt;/p&gt;
+&lt;p&gt;No Voyager, clique em “System -&amp;gt; Configuration -&amp;gt; System
+Configuration -&amp;gt; Job Scheduler”.&lt;br /&gt;
+Complete os campos com essa informação:&lt;br /&gt;
+Job Name: ntp&lt;br /&gt;
+Command: /usr/sbin/ntpdate 10.9.8.1 (Obs: Você deve sempre usar o
+caminho completo para o comando)&lt;br /&gt;
+Timezone: Local&lt;br /&gt;
+Repeat: Daily&lt;/p&gt;
+&lt;p&gt;Clique em "Apply"&lt;/p&gt;
+&lt;p&gt;Na seção "Execution Detail" preencha os campos com esssa informação:&lt;br /&gt;
+Hour: 0&lt;br /&gt;
+Minute: 15&lt;/p&gt;
+&lt;p&gt;Clique em "Apply" e "Save".&lt;/p&gt;
+&lt;p&gt;Obs: devido a uma limitação do Voyager, não é possível usar o "Job
+Scheduler" para agendar qualquer tarefa para ocorrer com uma frequência
+maior do que uma vez por dia. Não é necessário atualizar o horário com
+ntpdate mais do que uma vez por dia.&lt;/p&gt;</summary><category term="ipso vrrp ntp"></category></entry><entry><title>Como evitar o IPS/Web Intelligence para hosts específicos</title><link href="http://parededefogo.com.br/2011/12/05/como-evitar-o-ipsweb-intelligence-para-hosts-especificos/" rel="alternate"></link><updated>2011-12-05T10:19:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-12-05:2011/12/05/como-evitar-o-ipsweb-intelligence-para-hosts-especificos/</id><summary type="html">&lt;p&gt;Baseado na solução:  sk31918&lt;br /&gt;
+Aplicável à:   R70, NGX R65, R71, R75&lt;/p&gt;
+&lt;p&gt;Sintomas&lt;/p&gt;
+&lt;p&gt;Mensagem de erro "Invalid lf-cr combination in the http header" no
+SmartView Tracker.&lt;br /&gt;
+Tráfego para a porta 80 é bloqueado com a mensagem de erro mostrada
+acima quando o Worm Catcher está habilitado.&lt;br /&gt;
+Esse erro aparece para tráfego HTTP normal e para tráfego que não é
+HTTP e está usando a porta 80.&lt;/p&gt;
+&lt;p&gt;Causa&lt;/p&gt;
+&lt;p&gt;O módulo Web Intelligence traz algumas proteções, tais como o Worm
+Catcher e cabeçalhos de resposta ASCII-only, e isso implica que o
+tráfego precisa estar em conformidade com as RFCs do protocolo HTTP. Há
+verificações adicionais de segurança habilitados que não são
+explicitamente mencionados nas opções do IPS/Web Intelligence.&lt;/p&gt;
+&lt;p&gt;Solução&lt;/p&gt;
+&lt;p&gt;Cuidado: Se você aplicar a solução descrita a seguir, os endereços IP
+especificados, as portas e protocolos não serão inspecionados pelo
+IPS/Web Intelligence.&lt;/p&gt;
+&lt;!--more--&gt;
+
+&lt;p&gt;Para a versão R71 e superiores:&lt;/p&gt;
+&lt;p&gt;Para evitar o IPS para uma proteção específica:&lt;/p&gt;
+&lt;p&gt;Abra o SmartDashboard e vá na aba IPS.&lt;br /&gt;
+Vá na seção "Protections".&lt;br /&gt;
+Encontre a proteção que você quer evitar.&lt;br /&gt;
+Vá na aba "Network Exception".&lt;br /&gt;
+Clique em "New".&lt;br /&gt;
+Adicione uma nova exceção para essa proteção específica.&lt;br /&gt;
+Instale a politica de segurança.&lt;/p&gt;
+&lt;p&gt;Para evitar o IPS para uma rede inteira:&lt;/p&gt;
+&lt;p&gt;Abra o SmartDashboard e vá na aba IPS.&lt;br /&gt;
+Vá na aba "Network Exception".&lt;br /&gt;
+Clique em "New".&lt;br /&gt;
+dicione uma nova exceção para essa rede.&lt;br /&gt;
+Instale a politica de segurança&lt;/p&gt;
+&lt;p&gt;Para a versão R70:&lt;/p&gt;
+&lt;p&gt;Use o mesmo procedimento da versão NGX R65. Note que para o R70 isso
+funciona quando uma dessas proteções do IPS estiverem habilitadas:&lt;/p&gt;
+&lt;p&gt;HTTP format sizes&lt;br /&gt;
+HTTP methods&lt;br /&gt;
+HTTP request&lt;br /&gt;
+HTTP Worm Catcher&lt;br /&gt;
+HTTP directory traversal&lt;br /&gt;
+HTTP cross sites scripting&lt;br /&gt;
+HTTP SQL injection&lt;br /&gt;
+HTTP command stealth&lt;br /&gt;
+HTTP generic header spoofing&lt;br /&gt;
+HTTP header rejection&lt;br /&gt;
+HTTP buffer overflow&lt;br /&gt;
+HTTP response&lt;br /&gt;
+HTTP error concealment&lt;br /&gt;
+HTTP LDAP injection&lt;br /&gt;
+HTTP directory listing&lt;br /&gt;
+URL logging and Quick UFP (from resource)&lt;br /&gt;
+Uma das proteções p2p&lt;br /&gt;
+Uma das proteções para mensagens instantâneas&lt;/p&gt;
+&lt;p&gt;Nota:&lt;br /&gt;
+Todas as alterações devem ser feitas no arquivo \$FWDIR/lib/asm.def.&lt;br /&gt;
+selecione a caixa de seleção "Apply to all HTTP traffic" e instale a
+politica de segurança.&lt;/p&gt;
+&lt;p&gt;Para NGX R65:&lt;/p&gt;
+&lt;p&gt;Nota: faça todas as alterações no arquivo \$FWDIR/lib/asm.def no
+SmartCenter Server.&lt;/p&gt;
+&lt;p&gt;Procedimento:&lt;/p&gt;
+&lt;p&gt;Prepare uma lista de endereços IP para os quais você quer evitar as
+proteções do IPS/Web Intelligence.&lt;br /&gt;
+Faça um backup do arquivo no SmartCenter Server.&lt;br /&gt;
+Edite o arquivo no SmartCenter Server:&lt;br /&gt;
+Adicione a seguinte linha no começo do arquivo (essa lista representa
+os endereços IP problemáticos):&lt;/p&gt;
+&lt;p&gt;IPList = {&amp;lt;IP1&amp;gt;,&amp;lt;IP2&amp;gt;,&amp;lt;IP3&amp;gt;};&lt;/p&gt;
+&lt;p&gt;Exemplo:&lt;/p&gt;
+&lt;p&gt;IPList = {1.1.1.2,1.1.2.2};&lt;/p&gt;
+&lt;p&gt;Nota: você também pode usar uma lista de endereços IP usando a seguinte
+sintaxe:&lt;/p&gt;
+&lt;p&gt;IPList = {&amp;lt;IP_inicio,IP_fim&amp;gt;,&amp;lt;IP_inicio,IP2_fim&amp;gt;};&lt;/p&gt;
+&lt;p&gt;Por exemplo:&lt;/p&gt;
+&lt;p&gt;IPList = {&amp;lt;1.1.1.1,1.1.1.5&amp;gt;, &amp;lt;2.2.2.2,2.2.3.3&amp;gt;};&lt;/p&gt;
+&lt;p&gt;Ache a linha a seguir:&lt;br /&gt;
+#define ACTIVATE_WS_GLOBAL_DEFENSE (tcp, dport in
+http_services,ADD_INSPECTION(SPII_WEBSEC_ID)) or 1&lt;/p&gt;
+&lt;p&gt;Altere a linha da seguinte forma:&lt;br /&gt;
+#define ACTIVATE_WS_GLOBAL_DEFENSE (src not in IPList,dst not in
+IPList,tcp, dport in http_services,ADD_INSPECTION(SPII_WEBSEC_ID))
+or 1&lt;/p&gt;
+&lt;p&gt;Ache a linha a seguir:&lt;br /&gt;
+#define ACTIVATE_WS_SERVER_DEFENSE ( tcp, get from
+web_server_rules to sr10,
+ADD_INSPECTION_WITH_PARAMS(SPII_WEBSEC_ID, sr10)) or
+ACTIVATE_WS_GLOBAL_DEFENSE&lt;/p&gt;
+&lt;p&gt;Altere a linha da seguinte forma:&lt;br /&gt;
+#define ACTIVATE_WS_SERVER_DEFENSE ( src not in IPList,dst not in
+IPList,tcp, get from web_server_rules to sr10,
+ADD_INSPECTION_WITH_PARAMS(SPII_WEBSEC_ID, sr10)) or
+ACTIVATE_WS_GLOBAL_DEFENSE&lt;/p&gt;
+&lt;p&gt;Nota:&lt;br /&gt;
+No VPN-1 Power/UTM NGX R65 essas funções foram modificadas:&lt;/p&gt;
+&lt;p&gt;#define ACTIVATE_WS_GLOBAL_DEFENSE&lt;/p&gt;
+&lt;p&gt;(&lt;br /&gt;
+src not in IPList,dst not in IPList,tcp, dport in http_services,&lt;/p&gt;
+&lt;p&gt;((is_version_at_least(NGXENF_VER),call KFUNC_IS_NOTIFY&amp;lt;&amp;gt;) or
+ADD_INSPECTION(SPII_WEBSEC_ID))&lt;/p&gt;
+&lt;p&gt;) or 1&lt;/p&gt;
+&lt;p&gt;#define ACTIVATE_WS_SERVER_DEFENSE&lt;/p&gt;
+&lt;p&gt;(&lt;br /&gt;
+src not in IPList,dst not in IPList,tcp, get  from web_server_rules
+to sr10,&lt;/p&gt;
+&lt;p&gt;((is_version_at_least(NGXENF_VER),call KFUNC_IS_NOTIFY&amp;lt;&amp;gt;) or
+ADD_INSPECTION_WITH_PARAMS(SPII_WEBSEC_ID, sr10))&lt;/p&gt;
+&lt;p&gt;) or ACTIVATE_WS_GLOBAL_DEFENSE&lt;/p&gt;
+&lt;p&gt;Tenha certeza de sempre adicionar a parte (src not in IPList,dst not in
+IPList) depois de #define &amp;lt;nome da função&amp;gt;.&lt;/p&gt;
+&lt;p&gt;Instale a politica de segurança para ativar as alterações.&lt;/p&gt;</summary><category term="ips"></category><category term="smartdefense"></category></entry><entry><title>Como migrar a tabela de roteamento de um firewall SPLAT ou Linux com iproute2</title><link href="http://parededefogo.com.br/2011/11/18/como-migrar-a-tabela-de-roteamento-de-um-firewall-splat-ou-linux-com-iproute2/" rel="alternate"></link><updated>2011-11-18T14:46:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-11-18:2011/11/18/como-migrar-a-tabela-de-roteamento-de-um-firewall-splat-ou-linux-com-iproute2/</id><summary type="html">&lt;p&gt;No sistema antigo siga os seguintes passos:&lt;/p&gt;
+&lt;p&gt;Execute o comando: ip route show | grep via&lt;/p&gt;
+&lt;p&gt;Copie a saída do comando para um arquivo ou redirecione-a para um
+arquivo adicionando "&amp;gt; rotas.txt" ao comando anterior&lt;/p&gt;
+&lt;p&gt;Revise a lista e verifique se ela contem todas as rotas que você
+precisa. Caso haja rotas desnecessárias você pode deletá-las removendo a
+linha inteira.&lt;/p&gt;
+&lt;p&gt;Adicione "ip route add" no começo de cada linha usando um editor de
+texto da sua escolha ou usando esse comando a seguir:&lt;br /&gt;
+cat rotas.txt |awk '{ print "ip route add "\$0 ; }' &amp;gt;
+rotas_para_importar&lt;/p&gt;
+&lt;p&gt;As linhas no arquivo rotas_para_importar devem se parecer com essas:&lt;br /&gt;
+ip route add 10.1.1.1 via 192.168.10.1 dev eth0&lt;br /&gt;
+ip route add default via 192.168.10.102 dev eth0&lt;/p&gt;
+&lt;p&gt;Execute o arquivo (sh rotas_para_importar) no sistema de destino. As
+rotas serão adicionadas à tabela de roteamento.&lt;/p&gt;
+&lt;p&gt;Para fazer as rotas sobreviverem a um reboot use esses comandos no
+SPLAT:&lt;/p&gt;
+&lt;p&gt;save_route --save ou cpnetconf store&lt;/p&gt;
+&lt;p&gt;Em um sistema Linux comum você deve executar o arquivo
+rotas_para_importar no final da inicialização do sistema. Por exemplo
+no Slackware você deve adicionar essa linha
+“/caminho/para/rotas_para_importar” no arquivo /etc/rc.d/rc.local, já
+no Ubuntu essa linha pode ser adicionada em /etc/rc.local. Esse arquivo
+varia em cada distribuição.&lt;/p&gt;</summary><category term="splat"></category></entry><entry><title>Guia de referência fw monitor</title><link href="http://parededefogo.com.br/2011/11/11/guia-de-referencia-fw-monitor/" rel="alternate"></link><updated>2011-11-11T15:27:00-02:00</updated><author><name>talmeida</name></author><id>tag:parededefogo.com.br,2011-11-11:2011/11/11/guia-de-referencia-fw-monitor/</id><summary type="html">&lt;p&gt;Este comando permite que você monitore o tráfego de rede passando
+através do modulo de Kernel do Firewall. Também mostra a você como o
+tráfego deve parecer na perspectiva de várias partes de um Firewall e
+pode monitorar todas as interfaces simultaneamente. É muito importante
+salientar que o comando fw monitor não funciona na camada 2, ou seja,
+não é possível capturar endereços MAC com o fw monitor. O fw monitor
+funciona em qualquer plataforma onde o software Check Point estiver
+instalado.&lt;/p&gt;
+&lt;p&gt;Uso:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;fw monitor [-d] [-D] -e inspect-filter -f filter-file [-l len]
+[-m mask] [-x offset[,len]] [-o file]&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Nota: SecureClient contém o comando srfw dentro de C:Program
+FilesCheckPointSecuRemote que também funciona como fw monitor (e.g. srfw
+monitor).&lt;/p&gt;
+&lt;p&gt;Existem quatro "pontos de inspeção" quando um pacote passa através de um
+firewall Check Point (Security Gateway). Nós escolhemos onde queremos
+ver os pacotes com a opção -m:&lt;/p&gt;
+&lt;p&gt;Antes que o firewall processe o pacote na  direção de entrada (i ou
+PREIN)&lt;/p&gt;
+&lt;p&gt;Depois que o firewall processe o pacote na  direção de entrada (I ou
+POSTIN)&lt;/p&gt;
+&lt;p&gt;Antes que o firewall processe o pacote na  direção de saída (o ou
+PREOUT)&lt;/p&gt;
+&lt;p&gt;Depois que o firewall processe o pacote na  direção de saída (O ou
+POSTOUT)&lt;/p&gt;
+&lt;p&gt;&lt;img alt="fwmonitor" src="http://parededefogo.com.br/images/fwmonitor-300x180.png" /&gt;&lt;/p&gt;
+&lt;!--more--&gt;
+
+&lt;p&gt;Como podem haver muitos pacotes passando ao mesmo tempo pelo
+firewall, nós precisamos de alguma forma determinar quais pacotes
+queremos ver. Fazemos isso usando um filtro de inspeção (INSPECT filter)
+que pode ser digitado diretamente via linha de comando, ou via um
+arquivo INSPECT filter. Em qualquer dessas opções (-f ou -e) é
+necessário.&lt;/p&gt;
+&lt;p&gt;Uma vez que você executou este comando, O firewall irá compilar o script
+INSPECT (via linha de comando, ou via arquivo), carregá-lo no modulo de
+kernel, e mostrar os pacotes na janela do terminal, ou num arquivo de
+saída no formato snoop. O processo do fw monitor irá continuar rodando
+até que um sinal de interrupção seja enviado para o programa (ex.:
+Ctrl-C), o que causará a parada imediata do processo fw monitor.&lt;/p&gt;
+&lt;p&gt;O script INSPECT deverá retornar um "accept" para que os pacotes sejam
+mostrados. Qualquer outro código de retorno ocorrerá que os pacotes não
+serão mostrados. Se você quiser apenas olhar pacotes numa interface, não
+use &lt;a href="&amp;#109;&amp;#97;&amp;#105;&amp;#108;&amp;#116;&amp;#111;&amp;#58;&amp;#39;&amp;#101;&amp;#116;&amp;#104;&amp;#45;&amp;#115;&amp;#49;&amp;#112;&amp;#49;&amp;#64;&amp;#97;&amp;#108;&amp;#108;&amp;#39;"&gt;&amp;#39;&amp;#101;&amp;#116;&amp;#104;&amp;#45;&amp;#115;&amp;#49;&amp;#112;&amp;#49;&amp;#64;&amp;#97;&amp;#108;&amp;#108;&amp;#39;&lt;/a&gt; (por exemplo), e sim use 'direction=x,ifid=y' onde
+x=0 para entrada, 1 para saída, e y é o número da interface mostrado
+pelo comando fw ctl iflist. Não use os nomes de tabelas que são
+utilizadas pelo Check Point Firewall.&lt;/p&gt;
+&lt;p&gt;Exemplos:&lt;/p&gt;
+&lt;p&gt;O exemplo a seguir mostrará todos os pacotes TCP entrando e saindo do
+Firewall. O comando mostrará até 80 bytes do cabeçalho TCP e a parte de
+dados (assumindo que nenhuma opção IP está sendo usada).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ipso[admin]# fw monitor -e '[9:1]=6, accept;' -l 100 -m iO -x
+20&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;O exemplo a seguir mostrará todos os pacotes TCP entrando e saindo do
+Firewall na direção de entrada (Ex. antes de o sistema operacional
+rotear o pacote).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ipso[admin]# fw monitor -e 'accept;' -m iI&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;O exemplo a seguir mostrará todos os pacotes na interface com ID 0
+vindo, ou indo para 10.0.0.1. O valor usado de ifid corresponde&lt;/p&gt;
+&lt;p&gt;ao número dado para uma interface pelo firewall. Você pode determinar
+qual interface tem qual número usindo o comando:&lt;br /&gt;
+fw ctl iflist&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ipso[admin]# fw monitor -e 'accept ifid=0,src=10.0.0.1 or
+dst=10.0.0.1;'&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;O exemplo a seguir faz a mesma coisa que o comando acima com a exceção
+de olhar apenas pacotes IP Protocolo 47.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ipso[admin]# fw monitor -e 'accept ifid=0,src=10.0.0.1 or
+dst=10.0.0.1,ip_p=47;'&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;O exemplo a seguir mostrará todos os pacotes tcp indo para ou vindo de
+10.0.0.1 com a porta 80 sendo tanto na origem quanto no destino.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ipso[admin]# fw monitor -e 'accept PROTO_tcp,dport=80 or
+sport=80,src=10.0.0.1 or dst=10.0.0.1;'&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Outros exemplos comuns&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ipso[admin]# fw monitor –e „accept (src=x.x.x.x or dst=x.x.x.x);“&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ipso[admin]# fw monitor –e „accept (src=x.x.x.x, dst=y.y.y.y);“&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ipso[admin]# fw monitor –e „accept ((src=x.x.x.x, dst=y.y.y.y) or
+(src=y.y.y.y, dst=x.x.x.x));“&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Cuidados:&lt;/p&gt;
+&lt;p&gt;Não modifique tabelas utilizadas em uma política, comportamento não
+esperado poderá ocorrer (incluindo crash do sistema).&lt;/p&gt;
+&lt;p&gt;Pacotes são desfragmentados quando saem do Firewall tanto em entrada e
+saída.&lt;/p&gt;
+&lt;p&gt;Qualquer ação que carregue, descarregue ou instale uma política vai
+fazer com que o fw monitor pare.&lt;/p&gt;</summary><category term="fw monitor"></category><category term="INSPECT"></category></entry><entry><title>Adicionando rotas estáticas no SPLAT usando sysconfig</title><link href="http://parededefogo.com.br/2011/11/06/adicionando-rotas-estaticas-no-splat-usando-sysconfig/" rel="alternate"></link><updated>2011-11-06T11:05:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-11-06:2011/11/06/adicionando-rotas-estaticas-no-splat-usando-sysconfig/</id><summary type="html">&lt;p&gt;Para adicionar rotas estáticas no SPLAT - SecurePlataform siga esses
+passos:&lt;/p&gt;
+&lt;p&gt;Apartir do console no SPLAT ou em uma janela de terminal, execute o
+comando: sysconfig.&lt;/p&gt;
+&lt;p&gt;1. Escolha a opção 'Routing'.&lt;/p&gt;
+&lt;p&gt;2. Escolha se você quer adicionar uma nova rota de rede (Add new network
+route) ou uma nova rota de host (Add new host route).&lt;/p&gt;
+&lt;p&gt;3. Preencha essas informações:&lt;br /&gt;
+a. Endereço IP da rede ou do host. Máscara de rede (não se aplica a
+rotas de host).&lt;br /&gt;
+b. Endereço IP do gateway.&lt;br /&gt;
+c. Interface de saída (essa é a interface do firewall para onde os
+pacotes serão roteados, isto é, a interface usada para chegar no gateway
+dessa rota).&lt;/p&gt;
+&lt;p&gt;As rotas serão salvas automáticamente assim que forem adicionadas.&lt;/p&gt;
+&lt;p&gt;4. Escolha a opção 'Exibir a Configuração de Roteamento' (Show Routing
+Configuration) para verificar se as rotas foram realmente adicionadas.&lt;/p&gt;
+&lt;p&gt;5. Escolha 'Done' e então 'Exit' para sair do sysconfig.&lt;/p&gt;
+&lt;p&gt;Baseado na solução sk21474.&lt;br /&gt;
+Se aplica à NG, NGX R60, NGX R61, NG AI.&lt;/p&gt;</summary><category term="splat"></category></entry><entry><title>Como adicionar e salvar rotas no SPLAT sem usar as ferramentas 'sysconfig' ou 'webui'</title><link href="http://parededefogo.com.br/2011/11/06/como-adicionar-e-salvar-rotas-no-splat-sem-usar-as-ferramentas-sysconfig-ou-webui/" rel="alternate"></link><updated>2011-11-06T01:02:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-11-06:2011/11/06/como-adicionar-e-salvar-rotas-no-splat-sem-usar-as-ferramentas-sysconfig-ou-webui/</id><summary type="html">&lt;p&gt;A sintaxe para adicionar rotas em um firewall CheckPoint rodando SPLAT
+pela linha de comando (CLI) é a seguinte:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ip route add &amp;lt;IP/SUBNET&amp;gt; via GW&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Obs: Esse comando funciona em qualquer distribuição Linux que tenha o
+pacote iproute2 instalado. O pacote iproute2 deve subistituir as
+ferramentas clássicas "ifconfig", "route" e "arp".&lt;br /&gt;
+&lt;!--more--&gt;Detalhes da sintaxe:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;Uso&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;ip&lt;/span&gt; &lt;span class="n"&gt;route&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;list&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;flush&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="n"&gt;SELETOR&lt;/span&gt;
+
+       &lt;span class="n"&gt;ip&lt;/span&gt; &lt;span class="n"&gt;route&lt;/span&gt; &lt;span class="n"&gt;get&lt;/span&gt; &lt;span class="n"&gt;ADDRESS&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;ENDERE&lt;/span&gt;&lt;span class="err"&gt;Ç&lt;/span&gt;&lt;span class="n"&gt;O&lt;/span&gt; &lt;span class="n"&gt;iif&lt;/span&gt; &lt;span class="n"&gt;STRING&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+                            &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;oif&lt;/span&gt; &lt;span class="n"&gt;STRING&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;  &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;tos&lt;/span&gt; &lt;span class="n"&gt;TOS&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+       &lt;span class="n"&gt;ip&lt;/span&gt; &lt;span class="n"&gt;route&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;del&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;change&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;append&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;replace&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;monitor&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="n"&gt;ROTA&lt;/span&gt;
+
+&lt;span class="nl"&gt;SELETOR&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt; &lt;span class="n"&gt;PREFIXO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;match&lt;/span&gt; &lt;span class="n"&gt;PREFIXO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;exact&lt;/span&gt; &lt;span class="n"&gt;PREFIXO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+            &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;table&lt;/span&gt; &lt;span class="n"&gt;TABLE_ID&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;proto&lt;/span&gt; &lt;span class="n"&gt;RTPROTO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+            &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;type&lt;/span&gt; &lt;span class="n"&gt;TIPO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;scope&lt;/span&gt; &lt;span class="n"&gt;ESCOPO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="nl"&gt;ROTA&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;NODE_SPEC&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;INFO_SPEC&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="nl"&gt;NODE_SPEC&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;TIPO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;PREFIXO&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;tos&lt;/span&gt; &lt;span class="n"&gt;TOS&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+             &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;table&lt;/span&gt; &lt;span class="n"&gt;ID_DA_TABELA&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;proto&lt;/span&gt; &lt;span class="n"&gt;RTPROTO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+             &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;scope&lt;/span&gt; &lt;span class="n"&gt;ESCOPO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="n"&gt;M&lt;/span&gt;&lt;span class="err"&gt;É&lt;/span&gt;&lt;span class="n"&gt;TRICA&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="nl"&gt;INFO_SPEC&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;NH&lt;/span&gt; &lt;span class="n"&gt;OP&lt;/span&gt;&lt;span class="err"&gt;ÇÕ&lt;/span&gt;&lt;span class="n"&gt;ES&lt;/span&gt; &lt;span class="n"&gt;FLAGS&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;nexthop&lt;/span&gt; &lt;span class="n"&gt;NH&lt;/span&gt; &lt;span class="p"&gt;]...&lt;/span&gt;
+
+&lt;span class="nl"&gt;NH&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;via&lt;/span&gt; &lt;span class="n"&gt;ENDERE&lt;/span&gt;&lt;span class="err"&gt;Ç&lt;/span&gt;&lt;span class="n"&gt;O&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;dev&lt;/span&gt; &lt;span class="n"&gt;STRING&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;weight&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="err"&gt;Ú&lt;/span&gt;&lt;span class="n"&gt;MERO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;NHFLAGS&lt;/span&gt;
+
+&lt;span class="n"&gt;OP&lt;/span&gt;&lt;span class="err"&gt;ÇÕ&lt;/span&gt;&lt;span class="nl"&gt;ES&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;FLAGS&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;mtu&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="err"&gt;Ú&lt;/span&gt;&lt;span class="n"&gt;MERO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;advmss&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="err"&gt;Ú&lt;/span&gt;&lt;span class="n"&gt;MERO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+           &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;rtt&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="err"&gt;Ú&lt;/span&gt;&lt;span class="n"&gt;MERO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;rttvar&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="err"&gt;Ú&lt;/span&gt;&lt;span class="n"&gt;MERO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+           &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;window&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="err"&gt;Ú&lt;/span&gt;&lt;span class="n"&gt;MERO&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;cwnd&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="err"&gt;Ú&lt;/span&gt;&lt;span class="n"&gt;MERO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;ssthresh&lt;/span&gt; &lt;span class="n"&gt;REALM&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+           &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;realms&lt;/span&gt; &lt;span class="n"&gt;REALM&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="nl"&gt;TIPO&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;unicast&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;local&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;broadcast&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;multicast&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;throw&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;
+
+          &lt;span class="n"&gt;unreachable&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;prohibit&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;blackhole&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;nat&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="nl"&gt;ID_DA_TABELA&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;local&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;main&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;all&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="err"&gt;Ú&lt;/span&gt;&lt;span class="n"&gt;MERO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="nl"&gt;ESCOPO&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;host&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;link&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;global&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="err"&gt;Ú&lt;/span&gt;&lt;span class="n"&gt;MERO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="nl"&gt;FLAGS&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;equalize&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="nl"&gt;NHFLAGS&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;onlink&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;pervasive&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="nl"&gt;RTPROTO&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="n"&gt;kernel&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;boot&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="err"&gt;Ú&lt;/span&gt;&lt;span class="n"&gt;MERO&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;Exemplo:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[Expert@R61]# ip route add 2.1.1.0/24 via 194.29.42.179
+
+Kernel IP routing table
+
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+
+224.0.0.2       0.0.0.0         255.255.255.255 UHD   0      0        0 lo
+
+127.0.0.1       0.0.0.0         255.255.255.255 UH    0      0        0 lo
+
+194.29.42.128   0.0.0.0         255.255.255.128 U     0      0        0 eth0
+
+20.20.20.0      0.0.0.0         255.255.255.0   U     0      0        0 eth1
+
+10.10.10.0      20.20.20.114    255.255.255.0   UG    0      0        0 eth1
+
+2.1.1.0         194.29.42.179   255.255.255.0   UG    0      0        0 eth0
+
+192.168.121.0   0.0.0.0         255.255.255.0   U     0      0        0 eth2
+
+127.0.0.0       -               255.0.0.0       !D    0      -        0 -
+
+0.0.0.0         194.29.42.129   0.0.0.0         UG    0      0        0 eth0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Para salvar a configuração (note que essa operação faz a alteração ficar
+persistente, ou seja a rota não será perdida após um reboot), faça o
+seguinte:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[Expert@R61]# route --save
+
+Expert@R61]# reboot
+
+Are you sure? (y/n) y
+
+Broadcast message from root (ttyp0) (Mon Oct 23 04:11:40 2006):
+
+The system is going down for reboot NOW!
+
+Kernel IP routing table
+
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+
+224.0.0.2       0.0.0.0         255.255.255.255 UHD   0      0        0 lo
+
+127.0.0.1       0.0.0.0         255.255.255.255 UH    0      0        0 lo
+
+194.29.42.128   0.0.0.0         255.255.255.128 U     0      0        0 eth0
+
+20.20.20.0      0.0.0.0         255.255.255.0   U     0      0        0 eth1
+
+10.10.10.0      20.20.20.114    255.255.255.0   UG    0      0        0 eth1
+
+2.1.1.0         194.29.42.179   255.255.255.0   UG    0      0        0 eth0
+
+192.168.121.0   0.0.0.0         255.255.255.0   U     0      0        0 eth2
+
+127.0.0.0       -               255.0.0.0       !D    0      -        0 -
+
+0.0.0.0         194.29.42.129   0.0.0.0         UG    0      0        0 eth0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Basedo na solução sk32170&lt;br /&gt;
+Se aplica à SecurePlatform, SecurePlatform 2.6 executando NGX R65, R70,
+R71, R75&lt;/p&gt;</summary><category term="splat"></category></entry><entry><title>CST - Configuration Summary Tool</title><link href="http://parededefogo.com.br/2011/11/04/cst-configuration-summary-tool/" rel="alternate"></link><updated>2011-11-04T16:00:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-11-04:2011/11/04/cst-configuration-summary-tool/</id><summary type="html">&lt;p&gt;A ferramenta de sumário de configuração (CST - Configuration Summary
+Tool) do IPSO é um script localizado no diretório /etc, ela cria um
+arquivo de sumário da configuração atual do seu sistema operacional IPSO
+no formato HTML.&lt;/p&gt;
+&lt;p&gt;O CST está incluído no IPSO 3.8 build 20 e em todos as versões e
+atualizações subsequentes do IPSO. Se você está executando uma versão do
+IPSO que seja inferior à IPSO 3.8 build 20, você pode fazer o download
+do CST nesse link: &lt;a href="https://supportcenter.checkpoint.com/supportcenter/portal/user/anon/page/default.psml/media-type/html?action=portlets.DCFileAction&amp;amp;eventSubmit_doGetdcdetails=&amp;amp;fileid=9815"&gt;CST Versão 02-24-04g para IPSO 3.5 até IPSO
+3.8&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;O IPSO 6.1 e versões superiores inclue uma ferramenta chamada ECST, que
+é uma versão melhorada desta ferramenta. Essa ferramenta também está
+disponível separadamente para o IPSO 4.1 e 4.2. Veja o artigo em inglês
+&lt;a href="https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&amp;amp;solutionid=sk39913"&gt;sk39913 - Enhanced Configuration Summary Tool
+(ECST)&lt;/a&gt;para
+mais informações.&lt;br /&gt;
+&lt;!--more--&gt;CST versão 2007-09-26&lt;br /&gt;
+Usage: cst [-small] [-nocpinfo] [-batch] [-o dir]&lt;/p&gt;
+&lt;p&gt;-small&lt;br /&gt;
+não captura certos arquivos (como logs do firewall e arquivos&lt;br /&gt;
+vmcore) no entanto faz o arquivo cst resultante bem menor.&lt;br /&gt;
+-nocpinfo&lt;br /&gt;
+não executa cpinfo, in case it ends up hanging cst collection.&lt;/p&gt;
+&lt;p&gt;-batch&lt;br /&gt;
+não faz nenhuma pergunta (pode ser executado em plano de fundo)&lt;br /&gt;
+-o dir&lt;br /&gt;
+faz com que o diretório de saída seja "dir", requerido se estiver
+usando -batch&lt;/p&gt;
+&lt;p&gt;O CST reporta o hash MD5 de arquivos chaves do sistema. Isso é
+importante se arquivos vmcore exsitem no sistema e se uma análise será
+realizada. A informação MD5 reportada pelo CST garante que o kernel e os
+módulos corretos são usados durante a analise.&lt;/p&gt;
+&lt;p&gt;O CST pega todos os arquivos vmcore do kernel do IPSO do diretório
+/var/crash se ele existir no sistema. Para fazer uma análise do arquivos
+vmcore, o suporte deve requisitar os arquivos do diretório
+\$FWDIR/boot/modules/*.o do mesmo sistema onde os erros ocorreram. O
+arquivo de saída do eCST inclue os arquivos vmcore e também os arquivos
+*.o do sistema, eliminando assim a necessidade de pedir aqueles
+arquivos separadamente.&lt;/p&gt;
+&lt;p&gt;O CST no IPSO 3.6 e superior, gera relatórios com histórico de
+utilização de CPU, utilização de memória, e tráfego de todas as
+interfaces. Esses relatóris contem gráficos em forma de pizza assim como
+todos os dados coletados.&lt;/p&gt;
+&lt;p&gt;O CST também inclue informação de depuração sobre VRRP, RIP, OSPF, BGP,
+e DVMRP.&lt;/p&gt;
+&lt;p&gt;Ambos CST/eCST e CPINFO incluem um dump completo da tabela de conexões.
+Em sistemas que tem uma tabela de conexões muito grande, coletar esses
+dados pode ser uma tarefa muito custosa. Isso pode acabar fazendo o
+script do CST ser executado continuamente e nunca terminar. Em sismtas
+que tem muita carga de utilização é melhor executar o CST com uma
+prioridade baixa. O comando"nice +20 cst" talvez seja  necessário em
+caixas que estejam extramamente ocupadas, isso forçará o CST a ser 
+executado com a menor prioridade possivel.&lt;/p&gt;
+&lt;p&gt;Dependendo das condições do tráfego ativo ou do número de conexões, CST
+pode causar um maior uso da CPU e da memória no sistema enquanto está
+sendo executado.&lt;/p&gt;
+&lt;p&gt;Ao executar o CST você verá mensagens parecidas com essas:&lt;/p&gt;
+&lt;p&gt;meu-firewall[admin]# cst&lt;br /&gt;
+IPSO 3.6x or earlier kernel found...&lt;br /&gt;
+CST version 2006-12-26&lt;/p&gt;
+&lt;p&gt;=============== N O T I C E:  VOYAGER LOCKS =========================&lt;br /&gt;
+Please make sure you are logged out of Voyager.&lt;br /&gt;
+CST gathers certain information from clish, which may not work&lt;br /&gt;
+when there is a configuration lock in place established by an active&lt;br /&gt;
+Voyager session.&lt;br /&gt;
+=============== E N D   O F   N O T I C E    =========================&lt;/p&gt;
+&lt;p&gt;Continue? [y]&lt;/p&gt;
+&lt;p&gt;y&lt;br /&gt;
+Output Directory? [.] /var/tmp&lt;br /&gt;
+IPSO-4.2-BUILD111 detected...&lt;br /&gt;
+Generating IPv4 configuration summary...done&lt;br /&gt;
+Generating IPv6 configuration summary...done&lt;br /&gt;
+Gathering cpu utilization data...done&lt;br /&gt;
+Gathering memory utilization data...done&lt;br /&gt;
+Gathering interface statistics...done&lt;br /&gt;
+Gathering standard ipsoinfo data...done&lt;br /&gt;
+Gathering additional ipso information...&lt;br /&gt;
+vrrp data...done&lt;br /&gt;
+route data...done&lt;br /&gt;
+rip data...done&lt;br /&gt;
+ospf data...done&lt;br /&gt;
+bgp data...done&lt;br /&gt;
+dvmrp data...done&lt;br /&gt;
+pim data...done&lt;br /&gt;
+...done&lt;br /&gt;
+Gathering system logs......done&lt;br /&gt;
+Processsing vmcore files...none on this system.....done&lt;br /&gt;
+Gathering firewall data... Invalid flavour 'general' for product 'vpn'.
+Use 'cpstat' without any arguments to see supported products and
+flavours.&lt;br /&gt;
+Invalid flavour 'fwz' for product 'vpn'. Use 'cpstat' without any
+arguments to see supported products and flavours.&lt;br /&gt;
+...done&lt;br /&gt;
+Fetching cpinfo...&lt;br /&gt;
+cpinfo (I:0110):        Beginning ...&lt;/p&gt;
+&lt;p&gt;cpinfo (I:0116):        Latest cpinfo build:
+http://www.checkpoint.com/techsupport/downloadsng/utilities.html#cpinfo&lt;br /&gt;
+cpinfo (I:0112):        Embedding files ...&lt;/p&gt;
+&lt;p&gt;cpinfo (I:0120):        Output file  -
+cst-meu-firewall-11.04.2011-0825/cpinfo.meu-firewall.11.04.2011-0825&lt;br /&gt;
+cpinfo (I:0111):        Done&lt;br /&gt;
+done&lt;br /&gt;
+Creating index...done&lt;br /&gt;
+Creating archive file...done&lt;/p&gt;
+&lt;p&gt;Searching for system and process core files...done&lt;br /&gt;
+Fetching routing daemon state...done&lt;br /&gt;
+Compressing final archive...done&lt;/p&gt;
+&lt;p&gt;Output saved to /var/tmp/cst-meu-firewall-11.04.2011-0825.tar.gz&lt;/p&gt;
+&lt;p&gt;Depois que o arquivo de saída for gerado, no caso do exemplo acima
+/var/tmp/cst-meu-firewall-11.04.2011-0825.tar.gz, você pode usar o
+comando md5 para gerar um hash md5 antes de transferir o arquivo para
+uma localidade remota, depois de transferir o arquivo você pode usar o
+md5sum ou alguma ferramenta equivalente para garantir que o arquivo foi
+transferido corretamente.&lt;/p&gt;
+&lt;p&gt;meu-firewall[admin]# md5 cst-meu-firewall-11.04.2011-0825.tar.gz&lt;br /&gt;
+MD5 (cst-meu-firewall-11.04.2011-0825.tar.gz) =
+89a3dc1a5l60207d1b25b81a31cf8531&lt;/p&gt;
+&lt;p&gt;Você pode fazer download de um arquivo CST de exemplo no link: &lt;a href="https://supportcenter.checkpoint.com/supportcenter/portal/user/anon/page/default.psml/media-type/html?action=portlets.DCFileAction&amp;amp;eventSubmit_doGetdcdetails=&amp;amp;fileid=9816"&gt;Arquivo
+CST de
+exemplo&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Até mais!&lt;/p&gt;</summary><category term="ipso"></category></entry><entry><title>Removendo uma entrada específica da tabela de conexões</title><link href="http://parededefogo.com.br/2011/10/21/removendo-uma-entrada-especifica-da-tabela-de-conexoes/" rel="alternate"></link><updated>2011-10-21T18:02:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-10-21:2011/10/21/removendo-uma-entrada-especifica-da-tabela-de-conexoes/</id><summary type="html">&lt;div&gt;
+
+Toda vez que uma conexão é aceita por um firewall CheckPoint essa
+conexão é colocada em uma tabela de conexões.
+
+Você pode verificar o estado e alterar da tabela de conexões do seu
+firewall CheckPoint usando as várias opções do comando “fw tab -t
+connections”.
+
+Vamos supor que você tenha uma conexão TCP como essa mostrada abaixo e
+você quer remover essa entrada específica da tabela de conexões do seu
+firewall CheckPoint:
+
+Origem: 192.168.10.15  
+Porta de origem:52379
+
+Destino: 10.20.30.40  
+Porta de destino: 22
+
+&lt;!--more--&gt;Primeiro você precisa converter os valores acima para
+hexadecimal:
+
+Origem: c0a80a0f  
+Porta de origem: 0000cc9b
+
+Destino: 0a141e28  
+Porta de destino: 00000016
+
+Agora procure a entrada na tabela de conexão, usando o endereço e a
+porta de origem separados por vírgula:
+
+fw tab -t connections -u | grep “c0a80a0f, 0000cc9b”
+
+Você verá uma entrada como essa:
+
+&amp;lt;00000000, c0a80a0f, 0000cc9b, 0a141e28, 00000016, 00000006; …
+
+Esses campos significam: direção da conexão (0 = entrada, 1 = saída),
+endereço IP de origem, porta de origem, endereço IP de destino, porta de
+destino, número do protocolo (nesse caso TCP).  
+Observação: você pode ver todos os números de protocolo nesse link
+http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xml
+
+Agora que você encontrou a entrada na tabela de conexões que você quer
+remover. Você deve copiar aqueles valores e remover os espaços entre as
+vírgulas usar o comando abaixo para remover aquela entrada específica:
+
+fw tab -t connections -x -e
+“00000000,c0a80a0f,0000cc9b,0a141e28,00000016,00000006″
+
+Se a operação foi efetuada com sucesso você verá a mensagem:
+
+Entry &amp;lt;00000000, c0a80a0f, 0000cc9b, 0a141e28, 00000016,
+00000006&amp;gt;  
+deleted from table connections
+
+Dessa forma a conexão será removida da tabela de conexões os próximos
+pacotes dessa conexão serão bloqueados.
+
+Outra solução que talvez seja mais interessante é usar a função SAM
+(Suspicious Activity Monitoring) para bloquear o endereço de origem
+durante um determinado período de tempo.
+
+Use esse comando para bloquear o endereço de origem por 600 segundos (10
+minutos): fw sam -t 600 -l long\_alert -J src 192.168.10.15
+
+Observação: nunca usei o SAM em um ambiente com muitas conexões passando
+pelo firewall, gostaria de ver os seus comentários sobre a performance
+do firewall usando SAM.
+
+Até mais!
+
+&lt;/div&gt;</summary><category term="connections"></category></entry><entry><title>Por que o firewall muda a flag de alguns pacotes de SYN para ACK?</title><link href="http://parededefogo.com.br/2011/10/18/por-que-o-firewall-muda-a-flag-de-alguns-pacotes-de-syn-para-ack/" rel="alternate"></link><updated>2011-10-18T22:43:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-10-18:2011/10/18/por-que-o-firewall-muda-a-flag-de-alguns-pacotes-de-syn-para-ack/</id><summary type="html">&lt;p&gt;Sintoma:&lt;/p&gt;
+&lt;p&gt;Um pacote com a flag SYN enviado para o firewall tem a flag alterada
+para ACK ao sair  do firewall&lt;/p&gt;
+&lt;p&gt;Causa:&lt;/p&gt;
+&lt;p&gt;Quando um cliente tenta estabelecer uma nova conexão para um servidor
+usando a mesma porta de uma conexão que foi estabelicida anteriormente,
+que o cliente/servidor acha que a conexão foi terminada, mas o firewall
+acha que a conexão não foi terminada (ou seja, o firewall não viu um
+pacote as flags FIN ou RsT para aquela conexão), o firewall vai tentar
+determinar qual é o estado real da conexão.&lt;/p&gt;
+&lt;p&gt;Isso é feito usando a mecanismo fwconn_smart_conn_reuse (Reutilização
+inteligente de conexões)&lt;!--more--&gt;&lt;/p&gt;
+&lt;p&gt;O cliente envia um pacote com a flag SYN ativada. O firewall verifica em
+sua tabela de conexões que já existe uma conexão para aquele conjunto de
+IP de origem, IP de destino e porta de destino (certamente a conexão não
+foi encerrada corretamente).&lt;/p&gt;
+&lt;p&gt;Quando o firewall recebe esse pacote com a flag SYN ele muda a flag do
+pacote para ACK e envia o pacote para o servidor de destino.&lt;/p&gt;
+&lt;p&gt;* Se a reposta é um RST (reset), então o firewall sabe que ele pode
+reutilizar a conexão, já que o servidor está dizendo que a conexão foi
+encerrada e uma nova conexão para aquela porta pode ser estabelecida.&lt;br /&gt;
+Ou seja, se o firewall tivesse transferido o pacote com a flag SYN, o
+servidor teria aceitado a conexão.&lt;/p&gt;
+&lt;p&gt;* Se o servidor reponde com um pacote com a flag ACK (acknowledge),
+então o firewall sabe que a conexão ainda está aberta e que o pacote com
+a flag SYN não teria sido aceito pelo servidor (já que um pacote com a
+flag SYN estaria fora de estado, ou seja, não era esperado). Isso
+poderia indicar um ataque, ou simplesmente que o cliente não está ciente
+que o servidor ainda não encerrou a conexão no seu sistema operacional.
+Nesse caso o firewall vai reutilizar essa conexão.&lt;/p&gt;
+&lt;p&gt;Solução:&lt;/p&gt;
+&lt;p&gt;Você pode identificar se fwconn_smart_conn_reuse está habilitado
+usando o comando:&lt;/p&gt;
+&lt;p&gt;fw ctl get int fwconn_smart_conn_reuse&lt;/p&gt;
+&lt;p&gt;Se o valor retornado for 1 essa funcionalidade está ativada e esse será
+o comportamento do firewall.&lt;/p&gt;
+&lt;p&gt;Se o valor de retorno for 0 essa funcionalidade está desativada e o
+pacote com a flag SYN não será alterado pelo firewall.&lt;/p&gt;
+&lt;p&gt;Para alterar o parametro do kernel fwconn_smart_conn_reuse use o
+seguinte comando:&lt;/p&gt;
+&lt;p&gt;fw ctl set int fwconn_smart_conn_reuse 1&lt;/p&gt;
+&lt;p&gt;ou&lt;/p&gt;
+&lt;p&gt;fw ctl set int fwconn_smart_conn_reuse 0&lt;/p&gt;
+&lt;p&gt;Nota: A alteração desse parametro não não mudará o comportamento das
+conexões já estabelecidas. Esse parametro só vai  alterar o
+comportamento das novas conexões. A conexão deve ser removida da tabela
+de conexões ou deve atingir o tempo de timeout antes que esse
+comportamento mude.&lt;/p&gt;
+&lt;p&gt;Baseado na solução:
+&lt;a href="https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&amp;amp;solutionid=sk39455&amp;amp;js_peid=P-114a7bc3b09-10006&amp;amp;partition=Advanced&amp;amp;product=Security"&gt;https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&amp;amp;solutionid=sk39455&amp;amp;js_peid=P-114a7bc3b09-10006&amp;amp;partition=Advanced&amp;amp;product=Security&lt;/a&gt;&lt;/p&gt;</summary><category term="smart_conn_reuse"></category></entry><entry><title>Guia de Referência Rápida IPSO (Comandos mais utilizados)</title><link href="http://parededefogo.com.br/2011/10/18/guia-de-referencia-rapida-ipso-comandos-mais-utilizados/" rel="alternate"></link><updated>2011-10-18T22:41:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-10-18:2011/10/18/guia-de-referencia-rapida-ipso-comandos-mais-utilizados/</id><summary type="html">&lt;p&gt;Este é um guia de referência rápida para ser utilizado em Firewalls que
+rodam IPSO formalmente denominados de Nokia appliances. Você pode
+gerenciar o firewall CheckPoint IP appliance (Nokia), tanto a partir de
+linha de comando (CLISH) ou a partir do Voyager (Web GUI). Os comandos a
+seguir são utilizados via CLI CLISH:&lt;br /&gt;
+Nokia# clish&lt;br /&gt;
+Nokia&amp;gt;&lt;br /&gt;
+—Configurando default gateway&lt;br /&gt;
+set static-route default nexthop gateway address 192.168.29.2 priority
+1 on&lt;br /&gt;
+&lt;!--more--&gt;—Removendo default gateway&lt;br /&gt;
+set static-route default nexthop gateway address 192.168.29.2 off&lt;br /&gt;
+—Adicionando rotas estáticas&lt;br /&gt;
+set static-route 172.23.124.150/32 nexthop gateway address
+192.168.29.50 on&lt;br /&gt;
+—Removendo rotas estáticas&lt;br /&gt;
+set static-route 172.23.124.150/32 nexthop gateway address
+192.168.29.50 off&lt;br /&gt;
+—Adicionando proxy arp&lt;br /&gt;
+add arpproxy address 192.168.29.56 macaddress 0:a0:8e:7d:13:d0&lt;br /&gt;
+add arpproxy address 192.168.29.57 macaddress 0:a0:8e:7d:13:d0&lt;br /&gt;
+—Removendo proxy arp&lt;br /&gt;
+delete arpproxy address 192.168.29.56 macaddress 0:a0:8e:7d:13:d0&lt;br /&gt;
+delete arpproxy address 192.168.29.57 macaddress 0:a0:8e:7d:13:d0&lt;br /&gt;
+—Adicionando uma interface&lt;br /&gt;
+set interface eth1 speed 100M duplex full active on&lt;br /&gt;
+add interface eth1c0 address 192.168.29.54/24 enable&lt;br /&gt;
+—Configurando VRRP&lt;br /&gt;
+set vrrp accept-connections on&lt;br /&gt;
+set vrrp coldstart-delay 60&lt;br /&gt;
+set vrrp interface eth1c0 monitored-circuit vrid 54 monitored-interface
+eth2c0 on&lt;br /&gt;
+set vrrp interface eth1c0 monitored-circuit vrid 54 monitored-interface
+eth2c0 priority-delta 10&lt;br /&gt;
+set vrrp interface eth1c0 monitored-circuit vrid 54 monitored-interface
+eth3c0 on&lt;br /&gt;
+set vrrp interface eth1c0 monitored-circuit vrid 54 monitored-interface
+eth3c0 priority-delta 10&lt;br /&gt;
+set vrrp interface eth1c0 monitored-circuit vrid 54 priority 100&lt;br /&gt;
+set vrrp interface eth1c0 monitored-circuit vrid 54 hello-interval 1&lt;br /&gt;
+set vrrp interface eth1c0 monitored-circuit vrid 54 vmac-mode
+default-vmac&lt;br /&gt;
+set vrrp interface eth1c0 monitored-circuit vrid 54 backup-address
+192.168.29.1 on&lt;br /&gt;
+—Configurando servidores NTP&lt;br /&gt;
+add ntp server 10.1.1.2 version 3 prefer yes&lt;br /&gt;
+add ntp server 10.1.1.1 version 3 prefer yes&lt;br /&gt;
+—Configurando Time zone&lt;br /&gt;
+set date timezone-city “Greenwich (GMT)”&lt;br /&gt;
+—Adicionando hostname&lt;br /&gt;
+set hostname testbox&lt;br /&gt;
+—Adicionando uma entrada no arquivo Hosts&lt;br /&gt;
+add host name testbox ipv4 192.168.29.54&lt;/p&gt;</summary><category term="ipso"></category></entry><entry><title>Qual é a diferença entre debug, kdebug e zdebug?</title><link href="http://parededefogo.com.br/2011/10/18/qual-e-a-diferenca-entre-debug-kdebug-e-zdebug/" rel="alternate"></link><updated>2011-10-18T22:40:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-10-18:2011/10/18/qual-e-a-diferenca-entre-debug-kdebug-e-zdebug/</id><summary type="html">&lt;p&gt;O comando &lt;strong&gt;fw ctl&lt;/strong&gt; pode ser usado para depurar vários aspectos de um
+firewall CheckPoint.&lt;/p&gt;
+&lt;p&gt;O propósito desse documento é explicar o uso dos comandos fw ctl
+&lt;strong&gt;debug&lt;/strong&gt;, &lt;strong&gt;kdebug&lt;/strong&gt; e &lt;strong&gt;zdebug&lt;/strong&gt; e suas diferenças.&lt;/p&gt;
+&lt;p&gt;O comando fw ctl &lt;strong&gt;debug&lt;/strong&gt; pode ser usado para enviar mensages de
+depuração para o console. O exemplo a seguir mostra como depurar os
+pacotes que foram descartados, caso você não saiba exatamente qual foi o
+motivo:&lt;/p&gt;
+&lt;p&gt;fw ctl debug 0&lt;br /&gt;
+Zera as opções de depuração. É recomendado usar antes dos comandos
+abaixo.&lt;br /&gt;
+&lt;!--more--&gt;fw ctl debug –f &lt;em&gt;buffer&lt;/em&gt;&lt;br /&gt;
+Define o tamanho do buffer. Pode variar de 1024kb à 32768kb.&lt;/p&gt;
+&lt;p&gt;fw ctl debug –m fw drop&lt;br /&gt;
+Usa a opção &lt;strong&gt;drop&lt;/strong&gt; para o módulo &lt;strong&gt;fw&lt;/strong&gt; para mostrar todos os pacotes
+que foram descartados.&lt;/p&gt;
+&lt;p&gt;O comando &lt;strong&gt;fw ctl debug –x&lt;/strong&gt; será usado para parar a depuração.&lt;/p&gt;
+&lt;p&gt;Se você quer enviar as mensagens para outro lugar que não seja o
+console, você pode criar um buffer de depuração e usar o &lt;strong&gt;kdebug&lt;/strong&gt; para
+lê-lo. Para habilitar esse buffer use o comando &lt;strong&gt;fw ctl debug –buf.&lt;/strong&gt; A
+partir daí você pode usar o &lt;strong&gt;kdebug&lt;/strong&gt; para ler as mensagens do buffer.
+Assim que você executar o comando &lt;strong&gt;fw ctl kdebug&lt;/strong&gt;, ele limpará o
+buffer de depuração, permitindo que mais mensagens sejam vistas.&lt;/p&gt;
+&lt;p&gt;Para colocar as mensagens do buffer em um arquivo, use o comando &lt;strong&gt;fw
+ctl kdebug –f &amp;gt; output-file.txt.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;O comando fw ctl &lt;strong&gt;zdebug&lt;/strong&gt; pode ser usado como uma forma simplificada.
+Ele é basicamente um atalho para o módulo &lt;strong&gt;fw&lt;/strong&gt; e um buffer
+pré-configurado de &lt;strong&gt;1024kb&lt;/strong&gt;. Esse comando é recomendado quando não é
+necessário ver muitos pacotes para descobrir a razão do problema. Se
+você precisar que a sessão de depuração seja executada por mais tempo
+use kdebug. Veja abaixo um exemplo do zdebug que faz a mesma coisa que o
+kdebug do exemplo anterior:&lt;/p&gt;
+&lt;p&gt;f&lt;strong&gt;w ctl zdebug drop &amp;gt; output.txt&lt;/strong&gt;&lt;/p&gt;</summary><category term="debug"></category></entry></feed>

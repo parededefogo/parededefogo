@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Parede de Fogo</title><link href="http://parededefogo.com.br/" rel="alternate"></link><link href="http://parededefogo.com.br/feeds/cisco.atom.xml" rel="self"></link><id>http://parededefogo.com.br/</id><updated>2011-10-25T10:40:00-02:00</updated><entry><title>Proxy-Arp: O que é e como funciona</title><link href="http://parededefogo.com.br/2011/10/25/proxy-arp-o-que-e-e-como-funciona/" rel="alternate"></link><updated>2011-10-25T10:40:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-10-25:2011/10/25/proxy-arp-o-que-e-e-como-funciona/</id><summary type="html">&lt;p&gt;O Proxy-arp é um método onde um determinado host, que pode ser um router
+ou firewall por exemplo, responde um arp request em nome de outro host.
+Este protocolo (RFC-1027 &lt;a href="http://www.ietf.org/rfc/rfc1027.txt"&gt;http://www.ietf.org/rfc/rfc1027.txt&lt;/a&gt;) foi
+desenvolvido no final dos anos 80 pelo Departamento de Ciências da
+Computação da Universidade do Texas em Austin por necessidade deste em
+segmentar sua rede de computadores. Porém, naquela época, nem todos os
+devices de rede podiam ter seus endereços de redes subnetados, ou seja,
+um endereço classe A não poderia ser dividido em duas, três, doze, etc
+... redes diferentes pois o dispositivo somente reconhecia a classe de
+seu IP.&lt;br /&gt;
+&lt;!--more--&gt;Com o método de Proxy-ARP, foi possível que com um endereço
+de classe A configurado em diversos hosts com máscara padrão para esta
+classe fossem segmentados por routers ou firewalls que tivessem o método
+de Proxy-ARP implementado. Como exemplo de seu funcionamento, temos a
+topologia abaixo, onde o device Router possui o proxy-arp habilitado com
+o comando "ip proxy arp" na interface Ethernet0. Este comando é
+habilitado por default em devices Cisco, e é recomendado que esteja
+sempre desabilitado caso seu uso não seja necessário.&lt;/p&gt;
+&lt;p&gt;[gallery]&lt;/p&gt;
+&lt;p&gt;O host A (172.16.10.100) na subnet A quer enviar pacotes para o host D
+(172.16.20.200) na subnet B. Como mostrado no diagrama, o host A possui
+máscara de rede classe B (255.255.0.0). Isso significa que o host A
+acredita estar em uma rede diretamente conectada com toda rede
+172.16.0.0/16. Quando o host A necessita se comunicar com qualquer
+device que acredita estar diretamente conectado, ele envia um ARP
+request (o famoso pacote "Who has IP_x.x.x.x ? Tell to x.x.x.x).&lt;/p&gt;
+&lt;p&gt;Porém, como um arp request é um pacote broadcast, e por default routers
+não propagam broadcast, este request nunca chegará ao host D. Porém,
+como o device Router conhece a subnet onde o host D está, o Router em si
+irá responder o arp-request enviado para o IP 172.16.20.200, como sendo
+o mac-address 00-00-0c-94-36-ab, e todos os pacotes enviados do host A
+para o host D terão o fluxo host_A-&amp;gt;Router-&amp;gt;host_D. Porém, tudo
+isso será transparente para o host A e host D.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Host A necessita enviar um pacote para o host D;&lt;/li&gt;
+&lt;li&gt;Host A envia um arp-request querendo saber o mac-address do host D
+    172.16.20.200&lt;/li&gt;
+&lt;li&gt;Router recebe o arp-request, e o responde que o IP 172.16.20.200
+    possui o mac-address 00-00-0c-94-36-ab;&lt;/li&gt;
+&lt;li&gt;Host A envia um pacote para o mac-address 00-00-0c-94-36-ab;&lt;/li&gt;
+&lt;li&gt;Router recebe o pacote e encaminha ao host D;&lt;/li&gt;
+&lt;li&gt;Host D recebe o pacote com o campo origem IP 172.16.10.100,
+    mac-address 00-00-0c-94-36-cd;&lt;/li&gt;
+&lt;li&gt;Como o host D conhece o conceito de subnet e sabe que o host A está
+    em outra subnet, este envia a resposta para o IP 172.16.10.100 ao
+    seu default-gateway 172.16.20.99;&lt;/li&gt;
+&lt;li&gt;Router encaminha o pacote ao host A como origem 172.16.20.200,
+    mac-address 00-00-0c-94-36-ab.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Bem, tudo isso é muito confuso a parece não ser muito necessário nos
+dias de hoje. Porém há ainda muitas redes onde utilizam sistemas legados
+ou falsos dispositivos que são vendidos como "TCP/IP enabled" como
+catracas eletrônicas, relógios de ponto, PLCs entre outros, e nesses
+casos a utilização de proxy arp se faz necessário. Mas a utlização de
+tal método possui mais desvantagens do que vantagens. Entre as
+desvantagens podemos citar o aumento de tráfego ARP em determinado
+segmento de rede, podendo até mesmo causar issues de high cpu nos
+routers. Outra desvantagem é que os computadores que não tem
+configuração de subnet necessitarão de grandes tabelas ARP. Um outro
+ponto é a segurança, uma vez que em um cenário desses fica fácil a
+utilização da técnica em spoofing.&lt;/p&gt;
+&lt;p&gt;No exemplo de debug abaixo, foi utilizado a topologia acima com os
+mesmos Ips. O primeiro comando ping à partir do HOST_A foi dado com o
+proxy-arp desabilitado no device ROUTER. Notem que o ROUTER recebe os
+ARP Request, porém não envia nenhuma resposta. No segundo ping, o
+proxy-arp está habilitado na interface diretamente conectada ao HOST_A.
+o ROUTER envia o arp reply logo em seguida que recebe o arp request do
+HOST_A.&lt;/p&gt;
+&lt;p&gt;[ROUTER]&lt;br /&gt;
+ROUTER(config)#int f1/0&lt;br /&gt;
+ROUTER(config-if)#no ip proxy-arp&lt;br /&gt;
+*Feb 13 22:36:04.719: IP ARP: rcvd req src 172.16.10.100
+c801.1f95.0010, dst 172.16.20.200 FastEthernet1/0&lt;br /&gt;
+*Feb 13 22:36:24.227: IP ARP: rcvd req src 172.16.10.100
+c801.1f95.0010, dst 172.16.20.200 FastEthernet1/0&lt;br /&gt;
+*Feb 13 22:36:26.287: IP ARP: rcvd req src 172.16.10.100
+c801.1f95.0010, dst 172.16.20.200 FastEthernet1/0&lt;br /&gt;
+*Feb 13 22:36:28.287: IP ARP: rcvd req src 172.16.10.100
+c801.1f95.0010, dst 172.16.20.200 FastEthernet1/0&lt;br /&gt;
+*Feb 13 22:36:30.291: IP ARP: rcvd req src 172.16.10.100
+c801.1f95.0010, dst 172.16.20.200 FastEthernet1/0&lt;br /&gt;
+*Feb 13 22:36:32.295: IP ARP: rcvd req src 172.16.10.100
+c801.1f95.0010, dst 172.16.20.200 FastEthernet1/0&lt;/p&gt;
+&lt;p&gt;ROUTER(config-if)#ip proxy-arp&lt;br /&gt;
+*Feb 13 22:36:57.791: IP ARP: rcvd req src 172.16.10.100
+c801.1f95.0010, dst 172.16.20.200 FastEthernet1/0&lt;br /&gt;
+*Feb 13 22:36:57.795: IP ARP: sent rep src 172.16.20.200
+ca02.1f95.001c, dst 172.16.10.100 c801.1f95.0010 FastEthernet1/0&lt;/p&gt;
+&lt;p&gt;[HOST_A]&lt;br /&gt;
+HOST_A#ping 172.16.20.200&lt;/p&gt;
+&lt;p&gt;Type escape sequence to abort.&lt;br /&gt;
+Sending 5, 100-byte ICMP Echos to 172.16.20.200, timeout is 2 seconds:&lt;/p&gt;
+&lt;p&gt;*Mar 1 00:26:02.855: IP ARP: creating incomplete entry for IP address:
+172.16.20.200 interface FastEthernet1/0&lt;br /&gt;
+*Mar 1 00:26:02.859: IP ARP: sent req src 172.16.10.100
+c801.1f95.0010,&lt;br /&gt;
+dst 172.16.20.200 0000.0000.0000 FastEthernet1/0.&lt;br /&gt;
+*Mar 1 00:26:04.855: IP ARP: sent req src 172.16.10.100
+c801.1f95.0010,&lt;br /&gt;
+dst 172.16.20.200 0000.0000.0000 FastEthernet1/0.&lt;br /&gt;
+*Mar 1 00:26:06.855: IP ARP: sent req src 172.16.10.100
+c801.1f95.0010,&lt;br /&gt;
+dst 172.16.20.200 0000.0000.0000 FastEthernet1/0.&lt;br /&gt;
+*Mar 1 00:26:08.855: IP ARP: sent req src 172.16.10.100
+c801.1f95.0010,&lt;br /&gt;
+dst 172.16.20.200 0000.0000.0000 FastEthernet1/0.&lt;br /&gt;
+*Mar 1 00:26:10.855: IP ARP: sent req src 172.16.10.100
+c801.1f95.0010,&lt;br /&gt;
+dst 172.16.20.200 0000.0000.0000 FastEthernet1/0.&lt;br /&gt;
+Success rate is 0 percent (0/5)&lt;/p&gt;
+&lt;p&gt;HOST_A#ping 172.16.20.200&lt;/p&gt;
+&lt;p&gt;Type escape sequence to abort.&lt;br /&gt;
+Sending 5, 100-byte ICMP Echos to 172.16.20.200, timeout is 2 seconds:&lt;/p&gt;
+&lt;p&gt;*Mar 1 00:26:36.419: IP ARP: sent req src 172.16.10.100
+c801.1f95.0010,&lt;br /&gt;
+dst 172.16.20.200 0000.0000.0000 FastEthernet1/0&lt;br /&gt;
+*Mar 1 00:26:36.475: IP ARP: rcvd rep src 172.16.20.200
+ca02.1f95.001c, dst 172.16.10.100 FastEthernet1/0.!!!!&lt;br /&gt;
+Success rate is 80 percent (4/5), round-trip min/avg/max = 56/163/200
+ms&lt;/p&gt;
+&lt;p&gt;Autor: Rodrigo Varela Simões&lt;/p&gt;</summary><category term="proxy-arp"></category></entry></feed>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Proxy-Arp: O que é e como funciona</title>
+        <link rel="stylesheet" href="http://parededefogo.com.br/theme/css/main.css" />
+        <link href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Parede de Fogo Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://parededefogo.com.br/">Parede de Fogo  <strong>O ponto de encontro dos profissionais de segurança da informação</strong></a></h1>
+                <nav><ul>
+                    <li><a href="http://parededefogo.com.br/pages/man-tcpdump/">man tcpdump</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://parededefogo.com.br/2011/10/25/proxy-arp-o-que-e-e-como-funciona/" rel="bookmark"
+           title="Permalink to Proxy-Arp: O que é e como funciona">Proxy-Arp: O que é e como funciona</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-10-25T10:40:00-02:00">
+                Published: Tue 25 October 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/cisco/">cisco</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/proxy-arp/">proxy-arp</a> </p>
+</footer><!-- /.post-info -->      <p>O Proxy-arp é um método onde um determinado host, que pode ser um router
+ou firewall por exemplo, responde um arp request em nome de outro host.
+Este protocolo (RFC-1027 <a href="http://www.ietf.org/rfc/rfc1027.txt">http://www.ietf.org/rfc/rfc1027.txt</a>) foi
+desenvolvido no final dos anos 80 pelo Departamento de Ciências da
+Computação da Universidade do Texas em Austin por necessidade deste em
+segmentar sua rede de computadores. Porém, naquela época, nem todos os
+devices de rede podiam ter seus endereços de redes subnetados, ou seja,
+um endereço classe A não poderia ser dividido em duas, três, doze, etc
+... redes diferentes pois o dispositivo somente reconhecia a classe de
+seu IP.<br />
+<!--more-->Com o método de Proxy-ARP, foi possível que com um endereço
+de classe A configurado em diversos hosts com máscara padrão para esta
+classe fossem segmentados por routers ou firewalls que tivessem o método
+de Proxy-ARP implementado. Como exemplo de seu funcionamento, temos a
+topologia abaixo, onde o device Router possui o proxy-arp habilitado com
+o comando "ip proxy arp" na interface Ethernet0. Este comando é
+habilitado por default em devices Cisco, e é recomendado que esteja
+sempre desabilitado caso seu uso não seja necessário.</p>
+<p>[gallery]</p>
+<p>O host A (172.16.10.100) na subnet A quer enviar pacotes para o host D
+(172.16.20.200) na subnet B. Como mostrado no diagrama, o host A possui
+máscara de rede classe B (255.255.0.0). Isso significa que o host A
+acredita estar em uma rede diretamente conectada com toda rede
+172.16.0.0/16. Quando o host A necessita se comunicar com qualquer
+device que acredita estar diretamente conectado, ele envia um ARP
+request (o famoso pacote "Who has IP_x.x.x.x ? Tell to x.x.x.x).</p>
+<p>Porém, como um arp request é um pacote broadcast, e por default routers
+não propagam broadcast, este request nunca chegará ao host D. Porém,
+como o device Router conhece a subnet onde o host D está, o Router em si
+irá responder o arp-request enviado para o IP 172.16.20.200, como sendo
+o mac-address 00-00-0c-94-36-ab, e todos os pacotes enviados do host A
+para o host D terão o fluxo host_A-&gt;Router-&gt;host_D. Porém, tudo
+isso será transparente para o host A e host D.</p>
+<ul>
+<li>Host A necessita enviar um pacote para o host D;</li>
+<li>Host A envia um arp-request querendo saber o mac-address do host D
+    172.16.20.200</li>
+<li>Router recebe o arp-request, e o responde que o IP 172.16.20.200
+    possui o mac-address 00-00-0c-94-36-ab;</li>
+<li>Host A envia um pacote para o mac-address 00-00-0c-94-36-ab;</li>
+<li>Router recebe o pacote e encaminha ao host D;</li>
+<li>Host D recebe o pacote com o campo origem IP 172.16.10.100,
+    mac-address 00-00-0c-94-36-cd;</li>
+<li>Como o host D conhece o conceito de subnet e sabe que o host A está
+    em outra subnet, este envia a resposta para o IP 172.16.10.100 ao
+    seu default-gateway 172.16.20.99;</li>
+<li>Router encaminha o pacote ao host A como origem 172.16.20.200,
+    mac-address 00-00-0c-94-36-ab.</li>
+</ul>
+<p>Bem, tudo isso é muito confuso a parece não ser muito necessário nos
+dias de hoje. Porém há ainda muitas redes onde utilizam sistemas legados
+ou falsos dispositivos que são vendidos como "TCP/IP enabled" como
+catracas eletrônicas, relógios de ponto, PLCs entre outros, e nesses
+casos a utilização de proxy arp se faz necessário. Mas a utlização de
+tal método possui mais desvantagens do que vantagens. Entre as
+desvantagens podemos citar o aumento de tráfego ARP em determinado
+segmento de rede, podendo até mesmo causar issues de high cpu nos
+routers. Outra desvantagem é que os computadores que não tem
+configuração de subnet necessitarão de grandes tabelas ARP. Um outro
+ponto é a segurança, uma vez que em um cenário desses fica fácil a
+utilização da técnica em spoofing.</p>
+<p>No exemplo de debug abaixo, foi utilizado a topologia acima com os
+mesmos Ips. O primeiro comando ping à partir do HOST_A foi dado com o
+proxy-arp desabilitado no device ROUTER. Notem que o ROUTER recebe os
+ARP Request, porém não envia nenhuma resposta. No segundo ping, o
+proxy-arp está habilitado na interface diretamente conectada ao HOST_A.
+o ROUTER envia o arp reply logo em seguida que recebe o arp request do
+HOST_A.</p>
+<p>[ROUTER]<br />
+ROUTER(config)#int f1/0<br />
+ROUTER(config-if)#no ip proxy-arp<br />
+*Feb 13 22:36:04.719: IP ARP: rcvd req src 172.16.10.100
+c801.1f95.0010, dst 172.16.20.200 FastEthernet1/0<br />
+*Feb 13 22:36:24.227: IP ARP: rcvd req src 172.16.10.100
+c801.1f95.0010, dst 172.16.20.200 FastEthernet1/0<br />
+*Feb 13 22:36:26.287: IP ARP: rcvd req src 172.16.10.100
+c801.1f95.0010, dst 172.16.20.200 FastEthernet1/0<br />
+*Feb 13 22:36:28.287: IP ARP: rcvd req src 172.16.10.100
+c801.1f95.0010, dst 172.16.20.200 FastEthernet1/0<br />
+*Feb 13 22:36:30.291: IP ARP: rcvd req src 172.16.10.100
+c801.1f95.0010, dst 172.16.20.200 FastEthernet1/0<br />
+*Feb 13 22:36:32.295: IP ARP: rcvd req src 172.16.10.100
+c801.1f95.0010, dst 172.16.20.200 FastEthernet1/0</p>
+<p>ROUTER(config-if)#ip proxy-arp<br />
+*Feb 13 22:36:57.791: IP ARP: rcvd req src 172.16.10.100
+c801.1f95.0010, dst 172.16.20.200 FastEthernet1/0<br />
+*Feb 13 22:36:57.795: IP ARP: sent rep src 172.16.20.200
+ca02.1f95.001c, dst 172.16.10.100 c801.1f95.0010 FastEthernet1/0</p>
+<p>[HOST_A]<br />
+HOST_A#ping 172.16.20.200</p>
+<p>Type escape sequence to abort.<br />
+Sending 5, 100-byte ICMP Echos to 172.16.20.200, timeout is 2 seconds:</p>
+<p>*Mar 1 00:26:02.855: IP ARP: creating incomplete entry for IP address:
+172.16.20.200 interface FastEthernet1/0<br />
+*Mar 1 00:26:02.859: IP ARP: sent req src 172.16.10.100
+c801.1f95.0010,<br />
+dst 172.16.20.200 0000.0000.0000 FastEthernet1/0.<br />
+*Mar 1 00:26:04.855: IP ARP: sent req src 172.16.10.100
+c801.1f95.0010,<br />
+dst 172.16.20.200 0000.0000.0000 FastEthernet1/0.<br />
+*Mar 1 00:26:06.855: IP ARP: sent req src 172.16.10.100
+c801.1f95.0010,<br />
+dst 172.16.20.200 0000.0000.0000 FastEthernet1/0.<br />
+*Mar 1 00:26:08.855: IP ARP: sent req src 172.16.10.100
+c801.1f95.0010,<br />
+dst 172.16.20.200 0000.0000.0000 FastEthernet1/0.<br />
+*Mar 1 00:26:10.855: IP ARP: sent req src 172.16.10.100
+c801.1f95.0010,<br />
+dst 172.16.20.200 0000.0000.0000 FastEthernet1/0.<br />
+Success rate is 0 percent (0/5)</p>
+<p>HOST_A#ping 172.16.20.200</p>
+<p>Type escape sequence to abort.<br />
+Sending 5, 100-byte ICMP Echos to 172.16.20.200, timeout is 2 seconds:</p>
+<p>*Mar 1 00:26:36.419: IP ARP: sent req src 172.16.10.100
+c801.1f95.0010,<br />
+dst 172.16.20.200 0000.0000.0000 FastEthernet1/0<br />
+*Mar 1 00:26:36.475: IP ARP: rcvd rep src 172.16.20.200
+ca02.1f95.001c, dst 172.16.10.100 FastEthernet1/0.!!!!<br />
+Success rate is 80 percent (4/5), round-trip min/avg/max = 56/163/200
+ms</p>
+<p>Autor: Rodrigo Varela Simões</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'parededefogo';
+        var disqus_identifier = '2011/10/25/proxy-arp-o-que-e-e-como-funciona/';
+        var disqus_url = 'http://parededefogo.com.br/2011/10/25/proxy-arp-o-que-e-e-como-funciona/';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//parededefogo.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/tdmsilvino">@tdmsilvino</a></li>
+                            <li><a href="https://twitter.com/almeida_t">@almeida_t</a></li>
+                            <li><a href="https://br.linkedin.com/in/tdmsilvino">LinkedIn</a></li>
+                            <li><a href="https://ie.linkedin.com/in/tiagodealmeida">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'parededefogo';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

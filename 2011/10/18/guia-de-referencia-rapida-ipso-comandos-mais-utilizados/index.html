@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Guia de Referência Rápida IPSO (Comandos mais utilizados)</title>
+        <link rel="stylesheet" href="http://parededefogo.com.br/theme/css/main.css" />
+        <link href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Parede de Fogo Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://parededefogo.com.br/">Parede de Fogo  <strong>O ponto de encontro dos profissionais de segurança da informação</strong></a></h1>
+                <nav><ul>
+                    <li><a href="http://parededefogo.com.br/pages/man-tcpdump/">man tcpdump</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://parededefogo.com.br/2011/10/18/guia-de-referencia-rapida-ipso-comandos-mais-utilizados/" rel="bookmark"
+           title="Permalink to Guia de Referência Rápida IPSO (Comandos mais utilizados)">Guia de Referência Rápida IPSO (Comandos mais utilizados)</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-10-18T22:41:00-02:00">
+                Published: Tue 18 October 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/ipso/">ipso</a> </p>
+</footer><!-- /.post-info -->      <p>Este é um guia de referência rápida para ser utilizado em Firewalls que
+rodam IPSO formalmente denominados de Nokia appliances. Você pode
+gerenciar o firewall CheckPoint IP appliance (Nokia), tanto a partir de
+linha de comando (CLISH) ou a partir do Voyager (Web GUI). Os comandos a
+seguir são utilizados via CLI CLISH:<br />
+Nokia# clish<br />
+Nokia&gt;<br />
+—Configurando default gateway<br />
+set static-route default nexthop gateway address 192.168.29.2 priority
+1 on<br />
+<!--more-->—Removendo default gateway<br />
+set static-route default nexthop gateway address 192.168.29.2 off<br />
+—Adicionando rotas estáticas<br />
+set static-route 172.23.124.150/32 nexthop gateway address
+192.168.29.50 on<br />
+—Removendo rotas estáticas<br />
+set static-route 172.23.124.150/32 nexthop gateway address
+192.168.29.50 off<br />
+—Adicionando proxy arp<br />
+add arpproxy address 192.168.29.56 macaddress 0:a0:8e:7d:13:d0<br />
+add arpproxy address 192.168.29.57 macaddress 0:a0:8e:7d:13:d0<br />
+—Removendo proxy arp<br />
+delete arpproxy address 192.168.29.56 macaddress 0:a0:8e:7d:13:d0<br />
+delete arpproxy address 192.168.29.57 macaddress 0:a0:8e:7d:13:d0<br />
+—Adicionando uma interface<br />
+set interface eth1 speed 100M duplex full active on<br />
+add interface eth1c0 address 192.168.29.54/24 enable<br />
+—Configurando VRRP<br />
+set vrrp accept-connections on<br />
+set vrrp coldstart-delay 60<br />
+set vrrp interface eth1c0 monitored-circuit vrid 54 monitored-interface
+eth2c0 on<br />
+set vrrp interface eth1c0 monitored-circuit vrid 54 monitored-interface
+eth2c0 priority-delta 10<br />
+set vrrp interface eth1c0 monitored-circuit vrid 54 monitored-interface
+eth3c0 on<br />
+set vrrp interface eth1c0 monitored-circuit vrid 54 monitored-interface
+eth3c0 priority-delta 10<br />
+set vrrp interface eth1c0 monitored-circuit vrid 54 priority 100<br />
+set vrrp interface eth1c0 monitored-circuit vrid 54 hello-interval 1<br />
+set vrrp interface eth1c0 monitored-circuit vrid 54 vmac-mode
+default-vmac<br />
+set vrrp interface eth1c0 monitored-circuit vrid 54 backup-address
+192.168.29.1 on<br />
+—Configurando servidores NTP<br />
+add ntp server 10.1.1.2 version 3 prefer yes<br />
+add ntp server 10.1.1.1 version 3 prefer yes<br />
+—Configurando Time zone<br />
+set date timezone-city “Greenwich (GMT)”<br />
+—Adicionando hostname<br />
+set hostname testbox<br />
+—Adicionando uma entrada no arquivo Hosts<br />
+add host name testbox ipv4 192.168.29.54</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'parededefogo';
+        var disqus_identifier = '2011/10/18/guia-de-referencia-rapida-ipso-comandos-mais-utilizados/';
+        var disqus_url = 'http://parededefogo.com.br/2011/10/18/guia-de-referencia-rapida-ipso-comandos-mais-utilizados/';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//parededefogo.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/tdmsilvino">@tdmsilvino</a></li>
+                            <li><a href="https://twitter.com/almeida_t">@almeida_t</a></li>
+                            <li><a href="https://br.linkedin.com/in/tdmsilvino">LinkedIn</a></li>
+                            <li><a href="https://ie.linkedin.com/in/tiagodealmeida">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'parededefogo';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

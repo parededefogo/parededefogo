@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Parede de Fogo - smart_conn_reuse</title>
+        <link rel="stylesheet" href="http://parededefogo.com.br/theme/css/main.css" />
+        <link href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Parede de Fogo Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://parededefogo.com.br/">Parede de Fogo  <strong>O ponto de encontro dos profissionais de segurança da informação</strong></a></h1>
+                <nav><ul>
+                    <li><a href="http://parededefogo.com.br/pages/man-tcpdump/">man tcpdump</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://parededefogo.com.br/2011/10/18/por-que-o-firewall-muda-a-flag-de-alguns-pacotes-de-syn-para-ack/">Por que o firewall muda a flag de alguns pacotes de SYN para ACK?</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2011-10-18T22:43:00-02:00">
+                Published: Tue 18 October 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/smart_conn_reuse/">smart_conn_reuse</a> </p>
+</footer><!-- /.post-info --><p>Sintoma:</p>
+<p>Um pacote com a flag SYN enviado para o firewall tem a flag alterada
+para ACK ao sair  do firewall</p>
+<p>Causa:</p>
+<p>Quando um cliente tenta estabelecer uma nova conexão para um servidor
+usando a mesma porta de uma conexão que foi estabelicida anteriormente,
+que o cliente/servidor acha que a conexão foi terminada, mas o firewall
+acha que a conexão não foi terminada (ou seja, o firewall não viu um
+pacote as flags FIN ou RsT para aquela conexão), o firewall vai tentar
+determinar qual é o estado real da conexão.</p>
+<p>Isso é feito usando a mecanismo fwconn_smart_conn_reuse (Reutilização
+inteligente de conexões)<!--more--></p>
+<p>O cliente envia um pacote com a flag SYN ativada. O firewall verifica em
+sua tabela de conexões que já existe uma conexão para aquele conjunto de
+IP de origem, IP de destino e porta de destino (certamente a conexão não
+foi encerrada corretamente).</p>
+<p>Quando o firewall recebe esse pacote com a flag SYN ele muda a flag do
+pacote para ACK e envia o pacote para o servidor de destino.</p>
+<p>* Se a reposta é um RST (reset), então o firewall sabe que ele pode
+reutilizar a conexão, já que o servidor está dizendo que a conexão foi
+encerrada e uma nova conexão para aquela porta pode ser estabelecida.<br />
+Ou seja, se o firewall tivesse transferido o pacote com a flag SYN, o
+servidor teria aceitado a conexão.</p>
+<p>* Se o servidor reponde com um pacote com a flag ACK (acknowledge),
+então o firewall sabe que a conexão ainda está aberta e que o pacote com
+a flag SYN não teria sido aceito pelo servidor (já que um pacote com a
+flag SYN estaria fora de estado, ou seja, não era esperado). Isso
+poderia indicar um ataque, ou simplesmente que o cliente não está ciente
+que o servidor ainda não encerrou a conexão no seu sistema operacional.
+Nesse caso o firewall vai reutilizar essa conexão.</p>
+<p>Solução:</p>
+<p>Você pode identificar se fwconn_smart_conn_reuse está habilitado
+usando o comando:</p>
+<p>fw ctl get int fwconn_smart_conn_reuse</p>
+<p>Se o valor retornado for 1 essa funcionalidade está ativada e esse será
+o comportamento do firewall.</p>
+<p>Se o valor de retorno for 0 essa funcionalidade está desativada e o
+pacote com a flag SYN não será alterado pelo firewall.</p>
+<p>Para alterar o parametro do kernel fwconn_smart_conn_reuse use o
+seguinte comando:</p>
+<p>fw ctl set int fwconn_smart_conn_reuse 1</p>
+<p>ou</p>
+<p>fw ctl set int fwconn_smart_conn_reuse 0</p>
+<p>Nota: A alteração desse parametro não não mudará o comportamento das
+conexões já estabelecidas. Esse parametro só vai  alterar o
+comportamento das novas conexões. A conexão deve ser removida da tabela
+de conexões ou deve atingir o tempo de timeout antes que esse
+comportamento mude.</p>
+<p>Baseado na solução:
+<a href="https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&amp;solutionid=sk39455&amp;js_peid=P-114a7bc3b09-10006&amp;partition=Advanced&amp;product=Security">https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&amp;solutionid=sk39455&amp;js_peid=P-114a7bc3b09-10006&amp;partition=Advanced&amp;product=Security</a></p><p>There are <a href="http://parededefogo.com.br/2011/10/18/por-que-o-firewall-muda-a-flag-de-alguns-pacotes-de-syn-para-ack/#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/tdmsilvino">@tdmsilvino</a></li>
+                            <li><a href="https://twitter.com/almeida_t">@almeida_t</a></li>
+                            <li><a href="https://br.linkedin.com/in/tdmsilvino">LinkedIn</a></li>
+                            <li><a href="https://ie.linkedin.com/in/tiagodealmeida">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'parededefogo';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

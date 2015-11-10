@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Parede de Fogo</title><link href="http://parededefogo.com.br/" rel="alternate"></link><link href="http://parededefogo.com.br/feeds/blog.atom.xml" rel="self"></link><id>http://parededefogo.com.br/</id><updated>2011-10-18T22:39:00-02:00</updated><entry><title>Olá, mundo!</title><link href="http://parededefogo.com.br/2011/10/18/ola-mundo-2/" rel="alternate"></link><updated>2011-10-18T22:39:00-02:00</updated><author><name>tdmsilvino</name></author><id>tag:parededefogo.com.br,2011-10-18:2011/10/18/ola-mundo-2/</id><summary type="html">&lt;p&gt;Olá, mundo!&lt;/p&gt;
+&lt;p&gt;Vamos usar esse blog para compartilhar informações sobre  segurança da
+informação, principalmente sobre o uso de firewalls. Temos visto poucas
+informações sobre firewalls em português, então queremos ajudar a nossa
+comunidade lusófona a ganhar mais habilidade com firewalls Check Point e
+Cisco.&lt;/p&gt;
+&lt;p&gt;Também vamos comentar sobre ferramentas open source que podem ajudar a
+resolver problemas relacionados à redes de computadores.&lt;/p&gt;
+&lt;p&gt;Vamos focar os nossos posts em resolução de problemas complexos e tudo
+em pt_BR :)&lt;/p&gt;</summary></entry></feed>

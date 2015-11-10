@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Removendo uma entrada específica da tabela de conexões</title>
+        <link rel="stylesheet" href="http://parededefogo.com.br/theme/css/main.css" />
+        <link href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Parede de Fogo Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://parededefogo.com.br/">Parede de Fogo  <strong>O ponto de encontro dos profissionais de segurança da informação</strong></a></h1>
+                <nav><ul>
+                    <li><a href="http://parededefogo.com.br/pages/man-tcpdump/">man tcpdump</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://parededefogo.com.br/2011/10/21/removendo-uma-entrada-especifica-da-tabela-de-conexoes/" rel="bookmark"
+           title="Permalink to Removendo uma entrada específica da tabela de conexões">Removendo uma entrada específica da tabela de conexões</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-10-21T18:02:00-02:00">
+                Published: Fri 21 October 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/connections/">connections</a> </p>
+</footer><!-- /.post-info -->      <div>
+
+Toda vez que uma conexão é aceita por um firewall CheckPoint essa
+conexão é colocada em uma tabela de conexões.
+
+Você pode verificar o estado e alterar da tabela de conexões do seu
+firewall CheckPoint usando as várias opções do comando “fw tab -t
+connections”.
+
+Vamos supor que você tenha uma conexão TCP como essa mostrada abaixo e
+você quer remover essa entrada específica da tabela de conexões do seu
+firewall CheckPoint:
+
+Origem: 192.168.10.15  
+Porta de origem:52379
+
+Destino: 10.20.30.40  
+Porta de destino: 22
+
+<!--more-->Primeiro você precisa converter os valores acima para
+hexadecimal:
+
+Origem: c0a80a0f  
+Porta de origem: 0000cc9b
+
+Destino: 0a141e28  
+Porta de destino: 00000016
+
+Agora procure a entrada na tabela de conexão, usando o endereço e a
+porta de origem separados por vírgula:
+
+fw tab -t connections -u | grep “c0a80a0f, 0000cc9b”
+
+Você verá uma entrada como essa:
+
+&lt;00000000, c0a80a0f, 0000cc9b, 0a141e28, 00000016, 00000006; …
+
+Esses campos significam: direção da conexão (0 = entrada, 1 = saída),
+endereço IP de origem, porta de origem, endereço IP de destino, porta de
+destino, número do protocolo (nesse caso TCP).  
+Observação: você pode ver todos os números de protocolo nesse link
+http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xml
+
+Agora que você encontrou a entrada na tabela de conexões que você quer
+remover. Você deve copiar aqueles valores e remover os espaços entre as
+vírgulas usar o comando abaixo para remover aquela entrada específica:
+
+fw tab -t connections -x -e
+“00000000,c0a80a0f,0000cc9b,0a141e28,00000016,00000006″
+
+Se a operação foi efetuada com sucesso você verá a mensagem:
+
+Entry &lt;00000000, c0a80a0f, 0000cc9b, 0a141e28, 00000016,
+00000006&gt;  
+deleted from table connections
+
+Dessa forma a conexão será removida da tabela de conexões os próximos
+pacotes dessa conexão serão bloqueados.
+
+Outra solução que talvez seja mais interessante é usar a função SAM
+(Suspicious Activity Monitoring) para bloquear o endereço de origem
+durante um determinado período de tempo.
+
+Use esse comando para bloquear o endereço de origem por 600 segundos (10
+minutos): fw sam -t 600 -l long\_alert -J src 192.168.10.15
+
+Observação: nunca usei o SAM em um ambiente com muitas conexões passando
+pelo firewall, gostaria de ver os seus comentários sobre a performance
+do firewall usando SAM.
+
+Até mais!
+
+</div>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'parededefogo';
+        var disqus_identifier = '2011/10/21/removendo-uma-entrada-especifica-da-tabela-de-conexoes/';
+        var disqus_url = 'http://parededefogo.com.br/2011/10/21/removendo-uma-entrada-especifica-da-tabela-de-conexoes/';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//parededefogo.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/tdmsilvino">@tdmsilvino</a></li>
+                            <li><a href="https://twitter.com/almeida_t">@almeida_t</a></li>
+                            <li><a href="https://br.linkedin.com/in/tdmsilvino">LinkedIn</a></li>
+                            <li><a href="https://ie.linkedin.com/in/tiagodealmeida">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'parededefogo';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

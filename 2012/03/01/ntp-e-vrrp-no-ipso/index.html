@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>NTP e VRRP no IPSO</title>
+        <link rel="stylesheet" href="http://parededefogo.com.br/theme/css/main.css" />
+        <link href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Parede de Fogo Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://parededefogo.com.br/">Parede de Fogo  <strong>O ponto de encontro dos profissionais de segurança da informação</strong></a></h1>
+                <nav><ul>
+                    <li><a href="http://parededefogo.com.br/pages/man-tcpdump/">man tcpdump</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://parededefogo.com.br/2012/03/01/ntp-e-vrrp-no-ipso/" rel="bookmark"
+           title="Permalink to NTP e VRRP no IPSO">NTP e VRRP no IPSO</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-03-01T12:02:00-03:00">
+                Published: Thu 01 March 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/ipso-vrrp-ntp/">ipso vrrp ntp</a> </p>
+</footer><!-- /.post-info -->      <p>É recomendável usar NTP com VRRP ou IP Clustering?<br />
+Baseado nas soluções: sk40322 e sk41502<br />
+Aplicável à: IPSO</p>
+<p>* Muitas vezes é um requerido de um firewall em um ambiente de produção
+ter timestamps corretamente configurados com NTP.</p>
+<p>* Sincronização de horário é recomendado para soluções de cluster.</p>
+<p>Solução:</p>
+<p>Quedas frequentes do serviço xntpd podem ser associadas com transições
+de VRRP e problemas de IP Clustering.</p>
+<p>Nesses casos é prudente desabilitar o uso do NTP como servidor ou
+cliente, e ao invés disso usar o Agendador de Tarefas "Job Scheduler"
+para executar ntpdate, numa base diária ou mais frequente. A causa mais
+comum de quedas do xntpd é a mudança de estado em interfaces como link
+up/down, buffers cheios etc. Não há desvantagem alguma em executar o
+ntpdate ao invés do ntp.</p>
+<p>Como ajustar o intervalo de consuta no NTP</p>
+<p>Na maioria das plataformas Unix você pode editar o arquivo ntp.conf e
+especificar os parametros minpoll/maxpoll. Um minpoll ou maxpoll de n
+significa que ele vai, no mínimo, consultar o servidor ntp a cada 2n
+segundos.</p>
+<p>O IPSO não provê um mecanismo para controlar com qual frequência ele
+consultará o NTP. No entanto, você pode desabilitar o NTP e chamar o
+comando ntpdate periodicamente usando um cron job. Esse comando consulta
+um servidor NTP espedificado e atualiza o horário no sistema local.</p>
+<p>Examplo:<br />
+Se você desabilitar o NTP e quer atualizar o horário uma vez por dia
+com o servidor NTP 10.9.8.1 às 00:15, siga esses passos:</p>
+<p>No Voyager, clique em “System -&gt; Configuration -&gt; System
+Configuration -&gt; Job Scheduler”.<br />
+Complete os campos com essa informação:<br />
+Job Name: ntp<br />
+Command: /usr/sbin/ntpdate 10.9.8.1 (Obs: Você deve sempre usar o
+caminho completo para o comando)<br />
+Timezone: Local<br />
+Repeat: Daily</p>
+<p>Clique em "Apply"</p>
+<p>Na seção "Execution Detail" preencha os campos com esssa informação:<br />
+Hour: 0<br />
+Minute: 15</p>
+<p>Clique em "Apply" e "Save".</p>
+<p>Obs: devido a uma limitação do Voyager, não é possível usar o "Job
+Scheduler" para agendar qualquer tarefa para ocorrer com uma frequência
+maior do que uma vez por dia. Não é necessário atualizar o horário com
+ntpdate mais do que uma vez por dia.</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'parededefogo';
+        var disqus_identifier = '2012/03/01/ntp-e-vrrp-no-ipso/';
+        var disqus_url = 'http://parededefogo.com.br/2012/03/01/ntp-e-vrrp-no-ipso/';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//parededefogo.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://parededefogo.com.br/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/tdmsilvino">@tdmsilvino</a></li>
+                            <li><a href="https://twitter.com/almeida_t">@almeida_t</a></li>
+                            <li><a href="https://br.linkedin.com/in/tdmsilvino">LinkedIn</a></li>
+                            <li><a href="https://ie.linkedin.com/in/tiagodealmeida">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'parededefogo';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>
