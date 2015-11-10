@@ -21,31 +21,7 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="http://parededefogo.com.br/2014/09/06/inicio/">Início</a></h1>
-<footer class="post-info">
-        <abbr class="published" title="2014-09-06T20:39:00-03:00">
-                Published: Sat 06 September 2014
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
-        </address>
-<p>In <a href="http://parededefogo.com.br/category/misc/">misc</a>.</p>
-
-</footer><!-- /.post-info --><p>ARCH Section: Comandos de usuário (1)Updated: outubro de 2011</p><p>There are <a href="http://parededefogo.com.br/2014/09/06/inicio/#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://parededefogo.com.br/2012/03/01/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/" rel="bookmark"
-                           title="Permalink to Listando qual VLAN está em qual contexto de um firewall VSX">Listando qual VLAN está em qual contexto de um firewall VSX</a></h1>
-                </header>
-
-                <div class="entry-content">
+                    <h1 class="entry-title"><a href="http://parededefogo.com.br/2012/03/01/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/">Listando qual VLAN está em qual contexto de um firewall VSX</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2012-03-01T15:02:00-03:00">
                 Published: Thu 01 March 2012
@@ -56,16 +32,39 @@
         </address>
 <p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
 <p>tags: <a href="http://parededefogo.com.br/tag/context/">context</a> <a href="http://parededefogo.com.br/tag/vsx/">vsx</a> </p>
-</footer><!-- /.post-info -->                <p>Em um firewall ASA com multiplos contextos você pode achar qual VLAN
+</footer><!-- /.post-info --><p>Em um firewall ASA com multiplos contextos você pode achar qual VLAN
 está associada com qual contexto com esses comandos:<br />
 changeto system<br />
 show context (esse comando mostrará a lista de contextos e as VLANs
 associadas a cada um deles)</p>
 <p>Como obter a mesma informação em um firewall VSX?</p>
-<p>Em um ...</p>
-                <a class="readmore" href="http://parededefogo.com.br/2012/03/01/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/">read more</a>
-<p>There are <a href="http://parededefogo.com.br/2012/03/01/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
+<p>Em um firewall VSX você pode usar o comando "cat /proc/net/vlan/config"
+para ver uma lista de todas as VLANs que estão configuradas no firewall.</p>
+<p>Agora, como saber qual VLAN está em qual contexto? Se você tem muitos
+contextos essa pode ser uma tarefa trabalhosa.</p>
+<p>Para resolver essa questão fizemos um shell script que mostra qual VLAN
+está em qual contexto de firewall.</p>
+<p>Basta executar o script abaixo:</p>
+<p>for x in `fw vsx stat -v | tr -d " " | grep \^[0-9] | cut -d '|' -f
+1`; do<br />
+echo "context # \$x" &gt;&gt; contexts.txt;<br />
+fw getifs -vs \$x &gt;&gt; contexts.txt;<br />
+done</p>
+<p>Depois é só ver o resultado listando o conteúdo do arquivo contexts.txt:
+"cat contexts.txt"</p>
+<p>O conteúdo do arquivo deve ser parecido com esse:</p>
+<p>context # 1<br />
+localhost eth0.700 4.4.6.101 255.255.0.0<br />
+localhost eth0.701 4.4.5.101 255.255.0.0<br />
+localhost eth1.702 2.2.2.1 255.255.254.0<br />
+localhost eth1.703 3.3.3.1 255.255.254.0</p>
+<p>Nesse caso nós temos as VLANs 700 e 701 na interface eth0 do contexto 1
+e as VLANs 702 e 703 na interface eth1 do contexto 1.</p><p>There are <a href="http://parededefogo.com.br/2012/03/01/listando-qual-vlan-esta-em-qual-contexto-de-um-firewall-vsx/#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
 
             <li><article class="hentry">
                 <header>
@@ -150,6 +149,34 @@ arquivo adicionando "&gt; rotas.txt" ao comando anterior</p>
 precisa. Caso haja ...</p>
                 <a class="readmore" href="http://parededefogo.com.br/2011/11/18/como-migrar-a-tabela-de-roteamento-de-um-firewall-splat-ou-linux-com-iproute2/">read more</a>
 <p>There are <a href="http://parededefogo.com.br/2011/11/18/como-migrar-a-tabela-de-roteamento-de-um-firewall-splat-ou-linux-com-iproute2/#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://parededefogo.com.br/2011/11/06/adicionando-rotas-estaticas-no-splat-usando-sysconfig/" rel="bookmark"
+                           title="Permalink to Adicionando rotas estáticas no SPLAT usando sysconfig">Adicionando rotas estáticas no SPLAT usando sysconfig</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-11-06T11:05:00-02:00">
+                Published: Sun 06 November 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://parededefogo.com.br/author/tdmsilvino/">tdmsilvino</a>
+        </address>
+<p>In <a href="http://parededefogo.com.br/category/checkpoint/">checkpoint</a>.</p>
+<p>tags: <a href="http://parededefogo.com.br/tag/splat/">splat</a> </p>
+</footer><!-- /.post-info -->                <p>Para adicionar rotas estáticas no SPLAT - SecurePlataform siga esses
+passos:</p>
+<p>Apartir do console no SPLAT ou em uma janela de terminal, execute o
+comando: sysconfig.</p>
+<p>1. Escolha a opção 'Routing'.</p>
+<p>2. Escolha se você quer adicionar uma nova rota de rede (Add new network
+route) ou uma nova rota de ...</p>
+                <a class="readmore" href="http://parededefogo.com.br/2011/11/06/adicionando-rotas-estaticas-no-splat-usando-sysconfig/">read more</a>
+<p>There are <a href="http://parededefogo.com.br/2011/11/06/adicionando-rotas-estaticas-no-splat-usando-sysconfig/#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->
 <p class="paginator">
